@@ -121,13 +121,15 @@
         <div class="ps">气泡=门店组，大小=门店数 · 指导资源投放</div>
         <div class="mtx">
           <div class="mq" style="top:0;right:0;color:var(--good)"><span class="qh"><span data-ic="check-circle" data-sz="14"></span>健康 (104)</span></div>
-          <div class="mq" style="top:0;left:0;color:var(--mid)"><span class="qh"><span data-ic="alert-triangle" data-sz="14"></span>经营问题 (89)</span><span class="sm">→ 重点赋能</span></div>
-          <div class="mq" style="bottom:0;left:0;color:var(--muted)"><span class="qh"><span data-ic="gem" data-sz="14"></span>点位天花板 (52)</span></div>
-          <div class="mq" style="bottom:0;right:0;color:var(--bad)"><span class="qh"><span data-ic="x-circle" data-sz="14"></span>双重问题 (41)</span><span class="sm">→ 评估优化退出</span></div>
+          <div class="mq" style="top:0;left:0;color:var(--muted)"><span class="qh"><span data-ic="gem" data-sz="14"></span>点位天花板 (52)</span></div>
+          <div class="mq" style="bottom:0;left:0;color:var(--bad)"><span class="qh"><span data-ic="x-circle" data-sz="14"></span>双重问题 (41)</span><span class="sm">→ 评估优化退出</span></div>
+          <div class="mq" style="bottom:0;right:0;color:var(--mid)"><span class="qh"><span data-ic="alert-triangle" data-sz="14"></span>经营问题 (89)</span><span class="sm">→ 重点赋能</span></div>
           <div class="bub" style="width:54px;height:54px;background:var(--good);left:72%;bottom:70%"></div>
-          <div class="bub" style="width:48px;height:48px;background:var(--mid);left:26%;bottom:68%"></div>
-          <div class="bub" style="width:34px;height:34px;background:var(--muted);left:28%;bottom:26%"></div>
-          <div class="bub" style="width:30px;height:30px;background:var(--bad);left:74%;bottom:24%"></div>
+          <div class="bub" style="width:34px;height:34px;background:var(--muted);left:26%;bottom:70%"></div>
+          <div class="bub" style="width:30px;height:30px;background:var(--bad);left:26%;bottom:24%"></div>
+          <div class="bub" style="width:48px;height:48px;background:var(--mid);left:74%;bottom:24%"></div>
+          <div style="position:absolute;left:50%;bottom:4px;transform:translateX(-50%);font-size:9px;color:var(--muted);font-weight:700">低 ← 点位潜力 → 高</div>
+          <div style="position:absolute;left:4px;top:50%;font-size:9px;color:var(--muted);font-weight:700">低 ← 经营表现 → 高</div>
         </div>
       </div>
     </div>
@@ -166,26 +168,29 @@ const ICONS={
 function svg(n,size,sw){size=size||20;sw=sw||1.9;return `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${ICONS[n]||''}</svg>`}
 document.querySelectorAll('[data-ic]').forEach(e=>e.insertAdjacentHTML('afterbegin',svg(e.dataset.ic,+e.dataset.sz||20)));
 
-const stores=[
-  {n:'徐家汇店',c:'上海·港汇恒隆',s:34,q:['双重问题','t-bad','x-circle'],tr:-6,pen:'18%',adv:'评估止损/调改',advc:'var(--bad)'},
-  {n:'万象城店',c:'杭州·万象城',s:49,q:['经营问题','t-mid','alert-triangle'],tr:-3,pen:'30%',adv:'重点赋能·提转化',advc:'var(--mid)'},
-  {n:'大悦城店',c:'北京·大悦城',s:52,q:['经营问题','t-mid','alert-triangle'],tr:1,pen:'34%',adv:'会员渗透提升',advc:'var(--mid)'},
-  {n:'万达广场店',c:'成都·万达',s:58,q:['点位天花板','t-neu','gem'],tr:0,pen:'61%',adv:'已到位·控成本',advc:'var(--sub)'},
-  {n:'天环店',c:'广州·天环',s:71,q:['健康','t-good','check-circle'],tr:4,pen:'58%',adv:'维持·可借鉴',advc:'var(--good)'},
-  {n:'IFS 旗舰店',c:'深圳·IFS',s:88,q:['健康·标杆','t-good','star'],tr:3,pen:'66%',adv:'样板·经验复制',advc:'var(--good)'},
+const QMETA={healthy:['健康','t-good','check-circle','var(--good)'],ops:['经营问题','t-mid','alert-triangle','var(--mid)'],ceiling:['点位天花板','t-neu','gem','var(--sub)'],double:['双重问题','t-bad','x-circle','var(--bad)']};
+// 本地示例数据（file:// 打开时使用；http 服务下自动改用后端实时计算）
+const FALLBACK=[
+  {name:'示例服饰·徐家汇店',city:'上海·港汇恒隆',composite:34,quadrant:{code:'double',advice:'评估止损/调改'},trend_delta:-6,member_penetration:18},
+  {name:'示例服饰·万象城店',city:'杭州·万象城',composite:49,quadrant:{code:'ops',advice:'重点赋能·提转化'},trend_delta:-3,member_penetration:30},
+  {name:'示例服饰·大悦城店',city:'北京·大悦城',composite:52,quadrant:{code:'ops',advice:'会员渗透提升'},trend_delta:1,member_penetration:34},
+  {name:'示例服饰·万达广场店',city:'成都·万达',composite:58,quadrant:{code:'ceiling',advice:'已到位·控成本'},trend_delta:0,member_penetration:61},
+  {name:'示例服饰·天环店',city:'广州·天环',composite:71,quadrant:{code:'healthy',advice:'维持·可借鉴'},trend_delta:4,member_penetration:58},
+  {name:'示例服饰·IFS旗舰店',city:'深圳·IFS',composite:88,quadrant:{code:'healthy',advice:'样板·经验复制'},trend_delta:3,member_penetration:66},
 ];
 const ringc=s=>s>=70?'var(--good)':s>=55?'#3FAE6B':s>=40?'var(--mid)':'var(--bad)';
-document.getElementById('rows').innerHTML=stores.map(x=>`
-  <tr>
-    <td style="font-weight:700">示例服饰·${x.n}</td>
-    <td style="color:var(--sub)">${x.c}</td>
-    <td><span class="ring" style="background:${ringc(x.s)}">${x.s}</span></td>
-    <td><span class="tag ${x.q[1]}">${svg(x.q[2],13)}${x.q[0]}</span></td>
-    <td class="${x.tr<0?'trend-dn':x.tr>0?'trend-up':''}">${x.tr>0?'▲':x.tr<0?'▼':'—'} ${x.tr?Math.abs(x.tr):''}</td>
-    <td style="font-weight:700">${x.pen}</td>
-    <td style="color:${x.advc};font-weight:700">${x.adv}</td>
-    <td><span class="act-link">诊断 ${svg('arrow-right',13)}</span></td>
-  </tr>`).join('');
+function renderRows(items){document.getElementById('rows').innerHTML=items.map(x=>{
+  const q=QMETA[x.quadrant.code]||QMETA.ops, adv=x.quadrant.advice||q[0];
+  const pen=(x.member_penetration!=null)?Math.round(x.member_penetration)+'%':'—';
+  const loc=x.city+(x.carrier?(' · '+x.carrier):''), tr=x.trend_delta||0;
+  return `<tr><td style="font-weight:700">${x.name}</td><td style="color:var(--sub)">${loc}</td>`+
+    `<td><span class="ring" style="background:${ringc(x.composite)}">${Math.round(x.composite)}</span></td>`+
+    `<td><span class="tag ${q[1]}">${svg(q[2],13)}${q[0]}</span></td>`+
+    `<td class="${tr<0?'trend-dn':tr>0?'trend-up':''}">${tr>0?'▲':tr<0?'▼':'—'} ${tr?Math.abs(tr):''}</td>`+
+    `<td style="font-weight:700">${pen}</td><td style="color:${q[3]};font-weight:700">${adv}</td>`+
+    `<td><span class="act-link">诊断 ${svg('arrow-right',13)}</span></td></tr>`;}).join('');}
+renderRows(FALLBACK);
+if(location.protocol.indexOf('http')===0){fetch('/api/stores').then(r=>r.json()).then(d=>{if(Array.isArray(d)&&d.length)renderRows(d);}).catch(()=>{});}
 </script>
 </body>
 </html>

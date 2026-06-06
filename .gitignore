@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+backend/yyt.db
+.DS_Store

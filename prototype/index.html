@@ -196,9 +196,9 @@
         <div class="hero-top">
           <div class="gauge" id="gauge"></div>
           <div class="hero-info">
-            <div class="grade">综合健康分 <span class="tag">偏弱</span></div>
-            <div class="trend">较上月 <b>▼ 3 分</b> ｜ 同类店中位 60</div>
-            <div class="comp">点位潜力 70（高）　·　经营表现 46（低）</div>
+            <div class="grade">综合健康分 <span class="tag" id="h-grade">偏弱</span></div>
+            <div class="trend" id="h-trend">较上月 <b>▼ 3 分</b> ｜ 同类店中位 60</div>
+            <div class="comp" id="h-comp">点位潜力 70　·　经营表现 46</div>
           </div>
         </div>
       </div>
@@ -214,8 +214,8 @@
         <div class="ai">
           <div class="ai-av" data-ic="sparkles" data-sz="20"></div>
           <div>
-            <div class="ai-bubble">综合健康分 <b>49（偏弱）</b>。<b>点位是好的</b>——商圈机会 74、客群充足；问题出在<b>经营</b>：进店转化（后35%）与会员渗透率（后30%）明显低于同类店，叠加近距竞品偏多。</div>
-            <div class="verdict"><span data-ic="check-circle" data-sz="16"></span>值得投入改善，不建议止损</div>
+            <div class="ai-bubble" id="h-diag">综合健康分 <b>49（偏弱）</b>。<b>点位是好的</b>——商圈机会 74、客群充足；问题出在<b>经营</b>：进店转化与会员渗透率明显低于同类店，叠加近距竞品偏多。</div>
+            <div class="verdict"><span data-ic="check-circle" data-sz="16"></span><span id="h-verdict-t">值得投入改善，不建议止损</span></div>
           </div>
         </div>
       </div>
@@ -272,10 +272,10 @@
         <div class="card-t">点位 vs 经营 诊断 <span class="pill bad">经营问题</span></div>
         <div class="matrix">
           <div class="quad q1"><div class="qt" style="color:var(--good)"><span data-ic="check-circle" data-sz="13"></span>健康</div><div class="qd">点位好·经营到位</div></div>
-          <div class="quad q2"><div class="qt" style="color:var(--mid)"><span data-ic="alert-triangle" data-sz="13"></span>经营问题</div><div class="qd">点位有潜力<br>没吃透·值得投入</div></div>
-          <div class="quad q3"><div class="qt" style="color:var(--muted)"><span data-ic="gem" data-sz="13"></span>点位天花板</div><div class="qd">已做到位·盘子有限</div></div>
-          <div class="quad q4"><div class="qt" style="color:var(--bad)"><span data-ic="x-circle" data-sz="13"></span>双重问题</div><div class="qd">评估止损</div></div>
-          <div class="dotme" style="left:25%;bottom:60%"></div>
+          <div class="quad q2"><div class="qt" style="color:var(--muted)"><span data-ic="gem" data-sz="13"></span>点位天花板</div><div class="qd">已做到位·盘子有限</div></div>
+          <div class="quad q3"><div class="qt" style="color:var(--bad)"><span data-ic="x-circle" data-sz="13"></span>双重问题</div><div class="qd">评估止损</div></div>
+          <div class="quad q4"><div class="qt" style="color:var(--mid)"><span data-ic="alert-triangle" data-sz="13"></span>经营问题</div><div class="qd">点位有潜力<br>没吃透·值得投入</div></div>
+          <div class="dotme" id="dot" style="left:61%;bottom:47%"></div>
           <div class="axlab" style="left:6px;top:50%">低 ← 经营表现 → 高</div>
           <div class="axlab" style="left:50%;bottom:4px;transform:translateX(-50%)">低 ← 点位潜力 → 高</div>
         </div>
@@ -433,12 +433,15 @@ document.querySelectorAll('.nav .t').forEach(t=>{
 function gauge(score){const r=45,c=2*Math.PI*r,off=c*(1-score/100);
   const col=score>=70?'#fff':score>=55?'#FFE08A':'#FFC4BE';
   return `<svg width="106" height="106" viewBox="0 0 106 106"><circle cx="53" cy="53" r="${r}" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="9"/><circle cx="53" cy="53" r="${r}" fill="none" stroke="${col}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 53 53)"/></svg><div class="val"><div class="num">${score}</div><div class="lab">/ 100</div></div>`;}
-document.getElementById('gauge').innerHTML=gauge(49);
+let curScore=49;
+function renderGauge(){document.getElementById('gauge').innerHTML=gauge(curScore);}
+renderGauge();
 
 // ===== 六维 =====
-const dims=[{k:'商圈机会',ic:'map-pin',s:74,side:'点位'},{k:'载体质量',ic:'building',s:62,side:'点位'},{k:'竞争优势',ic:'crosshair',s:18,side:'点位',note:'压力82'},{k:'客流转化',ic:'footprints',s:42,side:'经营'},{k:'会员经营',ic:'users',s:45,side:'经营'},{k:'经营达成',ic:'wallet',s:50,side:'经营'}];
+let dims=[{k:'商圈机会',ic:'map-pin',s:74,side:'点位'},{k:'载体质量',ic:'building',s:62,side:'点位'},{k:'竞争优势',ic:'crosshair',s:18,side:'点位',note:'压力82'},{k:'客流转化',ic:'footprints',s:42,side:'经营'},{k:'会员经营',ic:'users',s:45,side:'经营'},{k:'经营达成',ic:'wallet',s:50,side:'经营'}];
 const col=s=>s>=70?'var(--good)':s>=55?'#3FAE6B':s>=40?'var(--mid)':'var(--bad)';
-document.getElementById('dims').innerHTML=dims.map(d=>`<div class="dim"><div class="dim-h"><div class="l"><span class="ic" style="color:${col(d.s)}">${svg(d.ic,16,2)}</span>${d.k}<span class="side">${d.note||d.side}</span></div><div class="s" style="color:${col(d.s)}">${d.s}</div></div><div class="bar"><i style="width:${d.s}%;background:${col(d.s)}"></i></div></div>`).join('');
+function renderDims(){document.getElementById('dims').innerHTML=dims.map(d=>`<div class="dim"><div class="dim-h"><div class="l"><span class="ic" style="color:${col(d.s)}">${svg(d.ic,16,2)}</span>${d.k}<span class="side">${d.note||d.side}</span></div><div class="s" style="color:${col(d.s)}">${d.s}</div></div><div class="bar"><i style="width:${d.s}%;background:${col(d.s)}"></i></div></div>`).join('');}
+renderDims();
 
 // ===== 雷达 =====
 function radar(){const data=dims.map(d=>({k:d.k,v:d.s})),N=data.length,cx=140,cy=142,R=96;
@@ -448,7 +451,8 @@ function radar(){const data=dims.map(d=>({k:d.k,v:d.s})),N=data.length,cx=140,cy
   const poly=data.map((d,i)=>pt(i,R*d.v/100).join(',')).join(' ');
   const dots=data.map((d,i)=>{const[x,y]=pt(i,R*d.v/100);return`<circle cx="${x}" cy="${y}" r="3" fill="#3056D3"/>`}).join('');
   return `<svg width="282" height="284" viewBox="0 0 282 284">${grid}${axes}<polygon points="${poly}" fill="rgba(48,86,211,.16)" stroke="#3056D3" stroke-width="2"/>${dots}${labels}</svg>`;}
-document.getElementById('radar').innerHTML=radar();
+function renderRadar(){document.getElementById('radar').innerHTML=radar();}
+renderRadar();
 
 // ===== 数据查询 =====
 const DATA={
@@ -466,7 +470,7 @@ function lineChart(arr,color){const W=300,H=112,p=10,mn=Math.min(...arr),mx=Math
   const area=line+` L ${xs(arr.length-1).toFixed(1)} ${H-p} L ${p} ${H-p} Z`;
   const dots=pts.map(q=>`<circle cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="2.6" fill="${color}"/>`).join('');
   return `<svg width="100%" viewBox="0 0 ${W} ${H}"><path d="${area}" fill="${color}" fill-opacity="0.12"/><path d="${line}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linejoin="round"/>${dots}</svg><div style="display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-top:2px"><span>6 期前</span><span>最新</span></div>`;}
-function renderData(){const d=DATA[curMetric],f=x=>`${x>0?'▲':x<0?'▼':''} ${Math.abs(x)}%`,cls=x=>x>0?'up':x<0?'down':'';
+async function renderData(){let d=DATA[curMetric];if(ONLINE){try{const _r=await fetch(API+'/stores/current/query?metric='+encodeURIComponent(curMetric));if(_r.ok)d=await _r.json();}catch(e){}}const f=x=>`${x>0?'▲':x<0?'▼':''} ${Math.abs(x)}%`,cls=x=>x>0?'up':x<0?'down':'';
   document.getElementById('m-metrics').innerHTML=Object.keys(DATA).map(k=>`<span class="qchip ${k===curMetric?'on':''}" data-m="${k}">${k}</span>`).join('');
   document.getElementById('m-name').textContent=curMetric;document.getElementById('m-val').textContent=d.val;document.getElementById('m-unit').textContent=d.unit;
   document.getElementById('m-env').innerHTML=`<span class="${cls(d.env)}">环比 ${f(d.env)}</span>`;
@@ -486,6 +490,26 @@ document.querySelectorAll('#ai .seg .o').forEach(o=>o.onclick=()=>aiView(o.datas
 document.querySelectorAll('#m-times .qchip').forEach(c=>c.onclick=()=>{document.querySelectorAll('#m-times .qchip').forEach(x=>x.classList.remove('on'));c.classList.add('on');document.getElementById('m-period').textContent=c.dataset.t+' · 同比/环比';});
 document.querySelectorAll('[data-jump]').forEach(q=>q.onclick=()=>{document.querySelector('.nav .t[data-s="ai"]').click();aiView('data');});
 document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{const inp=document.querySelector('#ai-chat .composer input');inp.value=c.textContent;inp.focus();}));
+
+// ===== 接入后端 API（http(s) 下生效；file:// 打开则用本地示例数据）=====
+const ONLINE=location.protocol.indexOf('http')===0, API='/api';
+async function boot(){
+  if(!ONLINE)return;
+  try{
+    const wb=await (await fetch(API+'/stores/current/workbench')).json();
+    const sc=await (await fetch(API+'/stores/current/scorecard')).json();
+    curScore=Math.round(wb.composite); renderGauge();
+    document.getElementById('h-grade').textContent=wb.grade;
+    document.getElementById('h-trend').innerHTML='较上月 <b>'+(wb.trend_delta>0?'▲':'▼')+' '+Math.abs(wb.trend_delta)+' 分</b> ｜ 同类店中位 60';
+    document.getElementById('h-comp').textContent='点位潜力 '+wb.point_potential+'　·　经营表现 '+wb.operation_performance;
+    document.getElementById('h-diag').textContent=wb.diagnosis;
+    document.getElementById('h-verdict-t').textContent=wb.verdict;
+    dims=sc.dimensions.map(d=>({k:d.name,ic:d.icon,s:Math.round(d.score),side:d.side==='point'?'点位':'经营',note:d.negative?('压力'+Math.round(d.score)):null}));
+    renderDims(); renderRadar();
+    const dot=document.getElementById('dot'); dot.style.left=sc.point_potential+'%'; dot.style.bottom=sc.operation_performance+'%';
+  }catch(e){console.warn('API 未连接，使用本地示例数据',e);}
+}
+boot();
 
 injectIcons();
 </script>
