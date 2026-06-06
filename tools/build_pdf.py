@@ -46,6 +46,8 @@ md = markdown.Markdown(extensions=["tables", "fenced_code", "attr_list", "sane_l
 sections, toc = [], []
 for f in files:
     raw = open(f, encoding="utf-8").read()
+    # 图片路径：docs 内用 ../screenshots（GitHub 友好）；PDF 以 ROOT 为 base_url，改为 screenshots/
+    raw = raw.replace("../screenshots/", "screenshots/")
     a = anchor_for(f)
     toc.append((a, title_of(f, raw)))
     md.reset()
@@ -65,7 +67,7 @@ cover = f'''<section class="cover">
   <div class="cover-sub">产品规划与发展文档</div>
   <div class="cover-line"></div>
   <div class="cover-desc">面向存量门店经营与发展的<br>「多维数据分析 + AI 决策」平台<br><br>移动端优先 · AI 优先 · 由外部数据到经营数据逐层深入</div>
-  <div class="cover-meta">汇总文档 15 篇　·　{today}</div>
+  <div class="cover-meta">汇总文档 {len(files)} 篇　·　{today}</div>
 </section>'''
 
 CSS = '''
@@ -127,6 +129,11 @@ td { padding:7px 9px; border-bottom:1px solid #E6E9F0; vertical-align:top; }
 tr:nth-child(even) td { background:#F7F8FB; }
 table, tr, td, th { break-inside: avoid; }
 h1, h2, h3 { break-after: avoid; }
+
+/* 原型截图 */
+img { border:1px solid #DDE1EA; border-radius:8px; break-inside: avoid; }
+img.phone { width:52mm; display:inline-block; vertical-align:top; margin:5px 4px; }
+img.wide  { width:100%; display:block; margin:10px auto; }
 '''
 
 full = f"<!DOCTYPE html><html><head><meta charset='utf-8'></head><body>{cover}{toc_html}{''.join(sections)}</body></html>"

@@ -39,13 +39,14 @@
 | 12 | [角色体系、能力与数据权限](docs/12-角色体系与权限.md) | 多层级角色全景、角色×能力×数据范围矩阵、RBAC、角色工作台 |
 | 13 | [SaaS 多租户与平台管理后台](docs/13-SaaS多租户与平台管理后台.md) | 三层后台、多租户隔离、混合数据模型、平台/租户管理后台、配置驱动 |
 | 14 | [门店健康度评分设计](docs/14-健康度评分设计.md) | 评分三层结构、对标组、折算方法、维度权重、点位vs经营量化、计算示例 |
+| 15 | [产品原型（高保真示意）](docs/15-产品原型.md) | 执行端/管理端关键界面截图：数据成熟度解锁、活动天气、会员分析、调改决策、拓店加密 |
 
 ### 🎨 交互原型
 
 | 原型 | 说明 |
 |------|------|
-| [prototype/index.html](prototype/index.html) | **移动端**（店长/加盟商）：工作台·体检·AI问数·增长 |
-| [prototype/dashboard.html](prototype/dashboard.html) | **Web 集团驾驶舱**：全盘总览·健康度分布·门店明细 |
+| [prototype/index.html](prototype/index.html) | **执行端 / 移动**（店长/加盟商）：工作台（数据成熟度解锁+活动天气）·体检·AI问数·会员分析·增长 |
+| [prototype/dashboard.html](prototype/dashboard.html) | **管理端 / Web 驾驶舱**：全盘总览·门店调改决策·拓店/加密评估 |
 
 > 自包含 HTML，浏览器/手机直接打开。详见 [prototype/README](prototype/README.md)。
 
