@@ -67,25 +67,45 @@
   .t-good{background:var(--good-soft);color:var(--good)}.t-mid{background:var(--mid-soft);color:var(--mid)}.t-bad{background:var(--bad-soft);color:var(--bad)}.t-neu{background:#EDEFF5;color:var(--sub)}
   .act-link{color:var(--primary);font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:3px}
   .trend-up{color:var(--good);font-weight:800}.trend-dn{color:var(--bad);font-weight:800}
+  /* 多视图 */
+  .view{display:none}.view.on{display:block}
+  /* 决策分桶 */
+  .buckets{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:16px}
+  .bk{background:var(--card);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);border-left:4px solid var(--line)}
+  .bk-h{font-size:12.5px;font-weight:700;color:var(--sub);display:flex;align-items:center;gap:7px}
+  .bk-h svg{width:16px;height:16px}
+  .bk-n{font-size:30px;font-weight:800;margin:8px 0 4px}
+  .bk-d{font-size:11px;color:var(--muted);line-height:1.4}
+  .bk-bad{border-left-color:var(--bad)}.bk-bad .bk-n{color:var(--bad)}
+  .bk-mid{border-left-color:var(--mid)}.bk-mid .bk-n{color:var(--mid)}
+  .bk-pri{border-left-color:var(--primary)}.bk-pri .bk-n{color:var(--primary)}
+  .bk-good{border-left-color:var(--good)}.bk-good .bk-n{color:var(--good)}
+  .minibar{display:inline-block;width:50px;height:7px;border-radius:4px;background:#EDEFF5;position:relative;vertical-align:middle;margin-right:6px}
+  .minibar i{position:absolute;left:0;top:0;height:100%;border-radius:4px}
+  .prio{font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:20px}
+  .prio.h{background:var(--bad-soft);color:var(--bad)}.prio.m{background:var(--mid-soft);color:var(--mid)}.prio.l{background:#EDEFF5;color:var(--sub)}
+  .soon{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:64px;text-align:center;color:var(--muted)}
+  .soon svg{width:38px;height:38px;margin-bottom:14px}
 </style>
 </head>
 <body>
   <aside class="side">
     <div class="logo"><span class="b" data-ic="trending-up" data-sz="18"></span>YYT-Store</div>
-    <div class="nav-i on" data-ic="layout" data-sz="18">全盘总览</div>
-    <div class="nav-i" data-ic="map" data-sz="18">门店地图</div>
-    <div class="nav-i" data-ic="activity" data-sz="18">门店健康度</div>
+    <div class="nav-i on" data-view="overview" data-ic="layout" data-sz="18">全盘总览</div>
+    <div class="nav-i" data-view="soon" data-ic="map" data-sz="18">门店地图</div>
+    <div class="nav-i" data-view="soon" data-ic="activity" data-sz="18">门店健康度</div>
     <div class="nav-sec">经营决策</div>
-    <div class="nav-i" data-ic="search" data-sz="18">门店诊断</div>
-    <div class="nav-i" data-ic="git-branch" data-sz="18">拓店 / 加密</div>
-    <div class="nav-i" data-ic="rocket" data-sz="18">营销增长</div>
-    <div class="nav-i" data-ic="users" data-sz="18">加盟商赋能</div>
+    <div class="nav-i" data-view="decision" data-ic="search" data-sz="18">门店调改</div>
+    <div class="nav-i" data-view="expansion" data-ic="git-branch" data-sz="18">拓店 / 加密</div>
+    <div class="nav-i" data-view="soon" data-ic="rocket" data-sz="18">营销增长</div>
+    <div class="nav-i" data-view="soon" data-ic="users" data-sz="18">加盟商赋能</div>
     <div class="nav-sec">分析</div>
-    <div class="nav-i" data-ic="crosshair" data-sz="18">商圈 · 竞争</div>
-    <div class="nav-i" data-ic="sparkles" data-sz="18">AI 分析助手</div>
+    <div class="nav-i" data-view="soon" data-ic="crosshair" data-sz="18">商圈 · 竞争</div>
+    <div class="nav-i" data-view="soon" data-ic="sparkles" data-sz="18">AI 分析助手</div>
   </aside>
 
   <main class="main">
+    <div class="view on" id="v-overview">
     <div class="top">
       <div>
         <h1>全盘门店总览</h1>
@@ -141,6 +161,80 @@
         <tbody id="rows"></tbody>
       </table>
     </div>
+    </div><!-- /v-overview -->
+
+    <!-- ===== 管理端决策：门店调改 ===== -->
+    <div class="view" id="v-decision">
+      <div class="top">
+        <div>
+          <h1>门店调改决策</h1>
+          <div class="sub">基于「点位 × 经营」四象限，输出 调改 / 止损 / 赋能 / 维持 的行动建议与优先级</div>
+        </div>
+        <div class="filters"><span class="fl act">需关注</span><span class="fl">全部门店</span><span class="fl">华东大区</span></div>
+      </div>
+      <div class="buckets">
+        <div class="bk bk-bad"><div class="bk-h"><span data-ic="scissors" data-sz="16"></span>建议止损 / 退出</div><div class="bk-n">14</div><div class="bk-d">点位经营双弱，改善空间有限</div></div>
+        <div class="bk bk-mid"><div class="bk-h"><span data-ic="wrench" data-sz="16"></span>建议调改</div><div class="bk-n">38</div><div class="bk-d">点位天花板 / 模型不匹配，需调改</div></div>
+        <div class="bk bk-pri"><div class="bk-h"><span data-ic="trending-up" data-sz="16"></span>重点赋能</div><div class="bk-n">89</div><div class="bk-d">点位好、经营弱，提转化与渗透</div></div>
+        <div class="bk bk-good"><div class="bk-h"><span data-ic="star" data-sz="16"></span>维持 / 标杆</div><div class="bk-n">104</div><div class="bk-d">健康，沉淀可复制经验</div></div>
+      </div>
+      <div class="panel">
+        <h3 style="margin-bottom:4px">调改决策清单 <span style="font-size:11.5px;font-weight:500;color:var(--muted)">（按优先级排序，止损 / 调改优先）</span></h3>
+        <div class="ps">每店给出关键问题与建议动作；点击可制定方案 / 发起评估</div>
+        <table>
+          <thead><tr><th>门店</th><th>健康分</th><th>点位潜力</th><th>经营表现</th><th>象限</th><th>关键问题</th><th>建议动作</th><th>优先级</th><th></th></tr></thead>
+          <tbody id="dec-rows"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== 管理端决策：拓店 / 加密 ===== -->
+    <div class="view" id="v-expansion">
+      <div class="top">
+        <div>
+          <h1>拓店选址 与 加密评估</h1>
+          <div class="sub">用外部数据为候选点位打分，并评估新店对自有门店的蚕食，辅助拓店决策</div>
+        </div>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><span class="ic" style="background:var(--primary-soft);color:var(--primary)" data-ic="map-pin" data-sz="20"></span><div class="l">候选点位</div><div class="v">12</div><div class="d">本季评估中</div></div>
+        <div class="kpi"><span class="ic" style="background:var(--good-soft);color:var(--good)" data-ic="check-circle" data-sz="20"></span><div class="l">推荐进入</div><div class="v" style="color:var(--good)">4</div><div class="d">预估健康分 ≥ 70</div></div>
+        <div class="kpi"><span class="ic" style="background:var(--mid-soft);color:var(--mid)" data-ic="clock" data-sz="20"></span><div class="l">持续观察</div><div class="v" style="color:var(--mid)">5</div><div class="d">需补充数据 / 择机</div></div>
+        <div class="kpi"><span class="ic" style="background:var(--bad-soft);color:var(--bad)" data-ic="alert-triangle" data-sz="20"></span><div class="l">加密预警</div><div class="v" style="color:var(--bad)">3</div><div class="d">对自有门店蚕食偏高</div></div>
+      </div>
+      <div class="panel" style="margin-bottom:16px">
+        <h3 style="margin-bottom:4px">候选点位评分</h3>
+        <div class="ps">商圈机会 × 客群匹配 × 竞争压力 → 预估开店健康分</div>
+        <table>
+          <thead><tr><th>候选点位</th><th>商圈机会</th><th>客群匹配</th><th>竞争压力</th><th>预估健康分</th><th>建议</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:700">南京 · 德基广场</td><td>88</td><td>高</td><td><span class="tag t-bad">高</span></td><td><span class="ring" style="background:var(--good)">75</span></td><td style="color:var(--good);font-weight:700">推荐进入</td></tr>
+            <tr><td style="font-weight:700">杭州 · 西溪印象城</td><td>78</td><td>高</td><td><span class="tag t-mid">中</span></td><td><span class="ring" style="background:var(--good)">72</span></td><td style="color:var(--good);font-weight:700">推荐进入</td></tr>
+            <tr><td style="font-weight:700">武汉 · 武商梦时代</td><td>70</td><td>中高</td><td><span class="tag t-mid">中</span></td><td><span class="ring" style="background:#3FAE6B">64</span></td><td style="color:var(--mid);font-weight:700">持续观察</td></tr>
+            <tr><td style="font-weight:700">西安 · 赛格国际</td><td>62</td><td>中</td><td><span class="tag t-bad">高</span></td><td><span class="ring" style="background:var(--mid)">55</span></td><td style="color:var(--mid);font-weight:700">持续观察</td></tr>
+            <tr><td style="font-weight:700">郑州 · 正弘城</td><td>48</td><td>中</td><td><span class="tag t-bad">高</span></td><td><span class="ring" style="background:var(--bad)">44</span></td><td style="color:var(--bad);font-weight:700">暂不进入</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="panel">
+        <h3 style="margin-bottom:4px">加密蚕食评估</h3>
+        <div class="ps">新增点位对周边自有门店的客流 / 销售蚕食预估，判断净增益</div>
+        <table>
+          <thead><tr><th>新候选点位</th><th>最近自有门店（距离）</th><th>预估蚕食</th><th>新店预估健康分</th><th>净增评估</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:700">杭州 · 西溪印象城</td><td style="color:var(--sub)">杭州万象城店（4.2km）</td><td style="color:var(--good);font-weight:700">8%</td><td><span class="ring" style="background:var(--good)">72</span></td><td><span class="tag t-good">净增益正向</span></td></tr>
+            <tr><td style="font-weight:700">上海 · 前滩太古里</td><td style="color:var(--sub)">上海徐家汇店（6.1km）</td><td style="color:var(--mid);font-weight:700">15%</td><td><span class="ring" style="background:#3FAE6B">68</span></td><td><span class="tag t-mid">一般 · 需评估</span></td></tr>
+            <tr><td style="font-weight:700">北京 · 朝阳合生汇</td><td style="color:var(--sub)">北京大悦城店（2.3km）</td><td style="color:var(--bad);font-weight:700">26%</td><td><span class="ring" style="background:var(--mid)">60</span></td><td><span class="tag t-bad">蚕食过高 · 另选</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== 占位 ===== -->
+    <div class="view" id="v-soon">
+      <div class="top"><div><h1 id="soon-t">建设中</h1><div class="sub">该模块在后续迭代规划中</div></div></div>
+      <div class="soon"><span data-ic="clock" data-sz="38"></span><div style="font-size:14px;font-weight:700;color:var(--sub)">该模块敬请期待</div><div style="margin-top:6px;font-size:12px">能力已在产品规划中（见 docs/05 功能与模块）</div></div>
+    </div>
   </main>
 
 <script>
@@ -164,6 +258,11 @@ const ICONS={
   gem:'<path d="M6 3h12l4 6-10 12L2 9z"/><path d="M11 3 8 9l4 12 4-12-3-6"/><path d="M2 9h20"/>',
   'chevron-down':'<path d="m6 9 6 6 6-6"/>',
   'arrow-right':'<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+  scissors:'<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/>',
+  wrench:'<path d="M14.7 6.3a4 4 0 0 0-5.6 5.6L3 18v3h3l6.1-6.1a4 4 0 0 0 5.6-5.6l-2.9 2.9-2-2 2.9-2.9z"/>',
+  'map-pin':'<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
 };
 function svg(n,size,sw){size=size||20;sw=sw||1.9;return `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${ICONS[n]||''}</svg>`}
 document.querySelectorAll('[data-ic]').forEach(e=>e.insertAdjacentHTML('afterbegin',svg(e.dataset.ic,+e.dataset.sz||20)));
@@ -191,6 +290,42 @@ function renderRows(items){document.getElementById('rows').innerHTML=items.map(x
     `<td><span class="act-link">诊断 ${svg('arrow-right',13)}</span></td></tr>`;}).join('');}
 renderRows(FALLBACK);
 if(location.protocol.indexOf('http')===0){fetch('/api/stores').then(r=>r.json()).then(d=>{if(Array.isArray(d)&&d.length)renderRows(d);}).catch(()=>{});}
+
+// ===== 多视图切换 =====
+const navs=document.querySelectorAll('.nav-i');
+navs.forEach(n=>n.addEventListener('click',()=>{
+  navs.forEach(x=>x.classList.remove('on'));n.classList.add('on');
+  const v=n.dataset.view||'soon';
+  document.querySelectorAll('.view').forEach(e=>e.classList.toggle('on',e.id==='v-'+v));
+  if(v==='soon')document.getElementById('soon-t').textContent=n.textContent.trim();
+}));
+
+// ===== 调改决策清单 =====
+const QT={double:['双重问题','t-bad','x-circle'],ceiling:['点位天花板','t-neu','gem'],ops:['经营问题','t-mid','alert-triangle'],healthy:['健康','t-good','check-circle']};
+const C={bad:'var(--bad)',mid:'var(--mid)',pri:'var(--primary)',good:'var(--good)'};
+const DEC=[
+  {name:'示例服饰·徐家汇店',city:'上海·港汇恒隆',comp:34,point:30,op:38,q:'double',problem:'客群外流 + 电商冲击，连续 3 年下滑',action:'发起止损评估',ac:C.bad,p:'h',cta:'评估'},
+  {name:'示例服饰·五角场店',city:'上海·合生汇',comp:38,point:35,op:42,q:'double',problem:'商场客流锐减，坪效低于盈亏线',action:'发起止损评估',ac:C.bad,p:'h',cta:'评估'},
+  {name:'示例服饰·西单店',city:'北京·大悦城',comp:44,point:42,op:48,q:'ceiling',problem:'点位老化、天花板低，面积偏大',action:'缩面积 / 模型调改',ac:C.mid,p:'m',cta:'调改'},
+  {name:'示例服饰·太古里店',city:'成都·太古里',comp:49,point:66,op:40,q:'ops',problem:'高人流低转化，动线与陈列待优化',action:'陈列调改 + 赋能',ac:C.pri,p:'h',cta:'方案'},
+  {name:'示例服饰·万象城店',city:'杭州·万象城',comp:54,point:61,op:47,q:'ops',problem:'点位好但进店转化 / 会员渗透低',action:'下发赋能方案',ac:C.pri,p:'h',cta:'方案'},
+  {name:'示例服饰·印象城店',city:'苏州·印象城',comp:41,point:38,op:44,q:'double',problem:'新商场养商期，客流不足',action:'观察 / 择机调改',ac:C.mid,p:'m',cta:'调改'},
+  {name:'示例服饰·大悦城店',city:'北京·大悦城',comp:52,point:58,op:46,q:'ops',problem:'会员渗透仅 34%，复购偏低',action:'会员渗透专项',ac:C.pri,p:'m',cta:'方案'},
+  {name:'示例服饰·万达店',city:'成都·万达',comp:58,point:50,op:64,q:'ceiling',problem:'经营到位、点位增长有限',action:'控成本 / 优化组合',ac:C.mid,p:'m',cta:'调改'},
+  {name:'示例服饰·万象天地店',city:'深圳·万象天地',comp:63,point:72,op:55,q:'ops',problem:'高潜点位，转化仍有空间',action:'提转化专项',ac:C.pri,p:'m',cta:'方案'},
+  {name:'示例服饰·天环店',city:'广州·天环',comp:71,point:68,op:72,q:'healthy',problem:'运营健康，结构均衡',action:'纳入标杆库',ac:C.good,p:'l',cta:'查看'},
+  {name:'示例服饰·IFS旗舰店',city:'深圳·IFS',comp:88,point:86,op:89,q:'healthy',problem:'样板店，经验可复制',action:'经验复制推广',ac:C.good,p:'l',cta:'复制'},
+];
+function bar(v){const c=v>=60?'var(--good)':v>=45?'var(--mid)':'var(--bad)';return `<span class="minibar"><i style="width:${v}%;background:${c}"></i></span><b>${v}</b>`;}
+document.getElementById('dec-rows').innerHTML=DEC.map(x=>{const q=QT[x.q];return `<tr>`+
+  `<td style="font-weight:700">${x.name}<div style="font-size:11px;color:var(--muted);font-weight:400">${x.city}</div></td>`+
+  `<td><span class="ring" style="background:${ringc(x.comp)}">${x.comp}</span></td>`+
+  `<td>${bar(x.point)}</td><td>${bar(x.op)}</td>`+
+  `<td><span class="tag ${q[1]}">${svg(q[2],13)}${q[0]}</span></td>`+
+  `<td style="color:var(--sub);max-width:210px">${x.problem}</td>`+
+  `<td style="font-weight:700;color:${x.ac}">${x.action}</td>`+
+  `<td><span class="prio ${x.p}">${x.p==='h'?'高':x.p==='m'?'中':'低'}</span></td>`+
+  `<td><span class="act-link">${x.cta} ${svg('arrow-right',13)}</span></td></tr>`;}).join('');
 </script>
 </body>
 </html>
