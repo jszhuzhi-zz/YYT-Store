@@ -62,12 +62,28 @@ toc_html += "</ul></section>"
 
 today = datetime.date.today().strftime("%Y-%m-%d")
 cover = f'''<section class="cover">
-  <div class="cover-badge">PRODUCT STRATEGY · v1.0</div>
-  <h1 class="cover-title">YYT-Store<br>门店数据分析平台</h1>
-  <div class="cover-sub">产品规划与发展文档</div>
-  <div class="cover-line"></div>
-  <div class="cover-desc">面向存量门店经营与发展的<br>「多维数据分析 + AI 决策」平台<br><br>移动端优先 · AI 优先 · 由外部数据到经营数据逐层深入</div>
-  <div class="cover-meta">汇总文档 {len(files)} 篇　·　{today}</div>
+  <div class="cover-top">
+    <div class="cover-badge">PRODUCT STRATEGY · v1.0</div>
+    <div class="cover-brand">YYT-Store</div>
+  </div>
+  <div class="cover-mid">
+    <h1 class="cover-title">门店数据分析平台</h1>
+    <div class="cover-sub">产品规划与发展文档</div>
+    <div class="cover-line"></div>
+    <div class="cover-desc">面向存量门店经营与发展的<br><b>「多维数据分析 ＋ AI 决策」</b>平台</div>
+    <div class="cover-spine">
+      <span class="sp">外部数据</span><span class="sp-ar">→</span>
+      <span class="sp">会员数据</span><span class="sp-ar">→</span>
+      <span class="sp">经营数据</span>
+    </div>
+    <div class="cover-spine-cap">产品主线 · 三层数据递进 · 由外到内逐层解锁</div>
+    <div class="cover-tags">
+      <span class="ct">移动端优先</span><span class="ct">AI 优先</span>
+      <span class="ct">管理端 · 执行端</span><span class="ct">五圈层模型</span>
+      <span class="ct">点位 vs 经营</span>
+    </div>
+  </div>
+  <div class="cover-meta">汇总文档 {len(files)} 篇　·　含交互原型截图　·　{today}</div>
 </section>'''
 
 CSS = '''
@@ -82,15 +98,28 @@ CSS = '''
 body { color: #20242E; font-size: 10.5pt; line-height: 1.75; }
 
 /* cover */
-.cover { page: cover; height: 297mm; background: linear-gradient(150deg,#27325a 0%,#1a2138 60%,#141a2c 100%);
-  color:#fff; padding: 42mm 24mm; display:flex; flex-direction:column; }
-.cover-badge { font-size:9pt; letter-spacing:3px; color:#8fa6ff; border:1px solid #3a4a7a; display:inline-block;
-  padding:5px 12px; border-radius:20px; align-self:flex-start; }
-.cover-title { font-size:40pt; font-weight:800; line-height:1.18; margin:34px 0 0; }
-.cover-sub { font-size:17pt; color:#aeb8d6; margin-top:14px; }
-.cover-line { width:64px; height:4px; background:linear-gradient(90deg,#6a8bff,#3056D3); border-radius:3px; margin:30px 0; }
-.cover-desc { font-size:12pt; color:#cdd4e6; line-height:2; }
-.cover-meta { margin-top:auto; font-size:10pt; color:#7d88a6; border-top:1px solid #2c365a; padding-top:16px; }
+.cover { page: cover; height: 297mm; background: linear-gradient(155deg,#2a3766 0%,#1b2240 55%,#121728 100%);
+  color:#fff; padding: 30mm 24mm; display:flex; flex-direction:column; justify-content:space-between; }
+.cover-top { display:flex; justify-content:space-between; align-items:center; }
+.cover-brand { font-size:13pt; font-weight:800; color:#9fb2ff; letter-spacing:1px; }
+.cover-badge { font-size:8.5pt; letter-spacing:3px; color:#9fb2ff; border:1px solid #46568c;
+  padding:5px 12px; border-radius:20px; }
+.cover-mid { }
+.cover-title { font-size:42pt; font-weight:800; line-height:1.14; margin:0;
+  color:#fff; border:0; padding:0; }
+.cover-sub { font-size:16pt; color:#aeb8d6; margin-top:12px; }
+.cover-line { width:64px; height:4px; background:linear-gradient(90deg,#6a8bff,#3056D3); border-radius:3px; margin:26px 0; }
+.cover-desc { font-size:13pt; color:#d3d9ea; line-height:1.9; }
+.cover-desc b { color:#fff; }
+.cover-spine { margin-top:28px; }
+.cover-spine .sp { font-size:11pt; font-weight:800; color:#fff; background:rgba(108,139,255,.20);
+  border:1px solid #4a5b95; padding:8px 16px; border-radius:24px; }
+.cover-spine .sp-ar { color:#8190c4; font-size:13pt; padding:0 8px; }
+.cover-spine-cap { font-size:9pt; color:#8a96bb; margin-top:11px; letter-spacing:.5px; }
+.cover-tags { margin-top:22px; }
+.cover-tags .ct { display:inline-block; font-size:9pt; color:#b3bcda; border:1px solid #38426c;
+  padding:4px 11px; border-radius:18px; margin:0 7px 8px 0; }
+.cover-meta { font-size:9.5pt; color:#828daf; border-top:1px solid #2c365a; padding-top:14px; }
 
 /* toc */
 .toc-page { page: toc; }

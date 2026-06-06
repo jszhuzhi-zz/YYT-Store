@@ -102,6 +102,13 @@
   .backbar .bk{width:34px;height:34px;border-radius:11px;background:#fff;box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center;color:var(--text);cursor:pointer;flex:none}
   .backbar .h{font-size:16px;font-weight:800}
   .backbar .d{font-size:11px;color:var(--sub);margin-top:2px}
+  .tierbar{display:flex;align-items:center;gap:6px;margin:0 0 14px}
+  .tierbar .ts{font-size:10.5px;font-weight:800;padding:4px 10px;border-radius:20px}
+  .tierbar .done{background:var(--good-soft);color:var(--good)}
+  .tierbar .cur{background:var(--primary);color:#fff}
+  .tierbar .todo{background:#EDEFF5;color:var(--muted)}
+  .tierbar .ar{color:var(--muted);font-size:11px}
+  .nextlayer{display:flex;align-items:center;gap:9px;background:var(--mid-soft);border-radius:13px;padding:12px 14px;margin-top:12px;font-size:12px;font-weight:700;color:#7a5212}
   .split{display:flex;height:32px;border-radius:9px;overflow:hidden;font-size:11px;font-weight:800;color:#fff}
   .split .f{display:flex;align-items:center;justify-content:center}
   .mtags{margin-top:13px}
@@ -440,6 +447,11 @@
         <div class="bk" data-go="home" data-ic="arrow-left" data-sz="18"></div>
         <div><div class="h">会员分析</div><div class="d">会员数据 × 第三方数据对接（LBS / 人口 / 消费）</div></div>
       </div>
+      <div class="tierbar">
+        <span class="ts done">① 外部 ✓</span><span class="ar">→</span>
+        <span class="ts cur">② 会员 · 当前层</span><span class="ar">→</span>
+        <span class="ts todo">③ 经营</span>
+      </div>
 
       <div class="card">
         <div class="card-t">会员概览 <span class="more">本月</span></div>
@@ -489,6 +501,8 @@
       </div>
 
       <div class="todo" data-go="grow" style="cursor:pointer"><span class="ibox primary s34" data-ic="target" data-sz="20"></span><div class="c"><b>圈选潜客人群</b>：基于以上来源地与场景，一键生成可触达人群包。</div><div class="go">去圈人</div></div>
+
+      <div class="nextlayer" data-go="home" style="cursor:pointer"><span data-ic="lock" data-sz="16"></span><div style="flex:1">下一层 · 接入<b>经营数据</b>，解锁综合健康分与经营诊断</div><span data-ic="arrow-up" data-sz="14" style="transform:rotate(90deg)"></span></div>
     </div>
 
   </div>
