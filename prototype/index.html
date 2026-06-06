@@ -134,6 +134,27 @@
 
   .sec-title{font-size:12px;font-weight:700;color:var(--sub);margin:16px 4px 8px;display:flex;align-items:center;gap:6px}
 
+  /* segmented + data query */
+  .seg{display:flex;background:#E7EAF1;border-radius:13px;padding:4px;margin:4px 0 14px}
+  .seg .o{flex:1;text-align:center;font-size:13px;font-weight:700;padding:9px;border-radius:9px;color:var(--sub)}
+  .seg .o.on{background:#fff;color:var(--primary);box-shadow:var(--shadow)}
+  .qlabel{font-size:10.5px;color:var(--muted);font-weight:700;margin:2px 2px 7px}
+  .qrow{display:flex;gap:7px;overflow-x:auto;padding-bottom:6px;margin-bottom:10px}
+  .qrow::-webkit-scrollbar{display:none}
+  .qchip{white-space:nowrap;font-size:12px;padding:7px 13px;border-radius:20px;background:#fff;border:1px solid var(--line);color:var(--sub);font-weight:600}
+  .qchip.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+  .metric{display:flex;align-items:flex-end;gap:8px}
+  .metric .big{font-size:34px;font-weight:800;line-height:1;color:var(--text)}
+  .metric .unit{font-size:13px;color:var(--sub);font-weight:600;margin-bottom:4px}
+  .metric .deltas{margin-left:auto;text-align:right;font-size:11.5px;line-height:1.7;font-weight:700}
+  .up{color:var(--good)} .down{color:var(--bad)}
+  .dtabs{display:flex;gap:7px}
+  .dtab{font-size:11px;font-weight:700;color:var(--sub);background:var(--bg);padding:5px 11px;border-radius:16px}
+  .dtab.on{background:var(--primary-soft);color:var(--primary)}
+  .quick{display:flex;gap:10px;margin-bottom:14px}
+  .qa{flex:1;background:#fff;border-radius:14px;padding:12px 4px;text-align:center;font-size:11px;font-weight:600;color:var(--sub);box-shadow:var(--shadow)}
+  .qa .i{font-size:21px;display:block;margin-bottom:5px}
+
   /* bottom nav */
   .nav{position:absolute;bottom:0;left:0;right:0;height:74px;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;padding:6px 8px 18px;z-index:40}
   .nav .t{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--muted);font-size:10px;font-weight:600}
@@ -173,6 +194,13 @@
             <div class="comp">📍 点位潜力 70（高）　🛠 经营表现 46（低）</div>
           </div>
         </div>
+      </div>
+
+      <div class="quick">
+        <div class="qa" data-jump="data"><span class="i">📊</span>查数据</div>
+        <div class="qa"><span class="i">🌆</span>商圈</div>
+        <div class="qa"><span class="i">⚔️</span>竞争</div>
+        <div class="qa"><span class="i">📄</span>报告</div>
       </div>
 
       <div class="card">
@@ -252,33 +280,71 @@
       </div>
     </div>
 
-    <!-- ============ AI 助手 ============ -->
+    <!-- ============ AI · 问数 / 数据查询 ============ -->
     <div class="screen" id="ai">
-      <div class="sec-title">🤖 AI 数据军师 · 问我任何门店问题</div>
-      <div class="chat-q"><div class="b">我这家店周末客流为什么跌？</div></div>
-      <div class="chat-a">
-        <div class="av">🤖</div>
-        <div class="b">本店上周末客流 <b>-8%</b>。归因拆解：<br>• <b>外因</b>：所在商圈大盘 -5%（节后淡季）<br>• <b>竞争</b>：同场新开 2 家女装，分流约 -2%<br>• <b>内因</b>：你的进店转化本就偏低，放大了影响
-          <div class="mini">
-            <div class="m"><div class="n" style="color:var(--bad)">-5%</div><div class="t">大盘外因</div></div>
-            <div class="m"><div class="n" style="color:var(--mid)">-2%</div><div class="t">竞争分流</div></div>
-            <div class="m"><div class="n" style="color:var(--primary)">-1%</div><div class="t">自身经营</div></div>
+      <div class="seg">
+        <div class="o on" data-v="chat">🤖 AI 问数</div>
+        <div class="o" data-v="data">📊 数据查询</div>
+      </div>
+
+      <!-- 对话式问数 -->
+      <div id="ai-chat">
+        <div class="chat-q"><div class="b">我这家店周末客流为什么跌？</div></div>
+        <div class="chat-a">
+          <div class="av">🤖</div>
+          <div class="b">本店上周末客流 <b>-8%</b>。归因拆解：<br>• <b>外因</b>：所在商圈大盘 -5%（节后淡季）<br>• <b>竞争</b>：同场新开 2 家女装，分流约 -2%<br>• <b>内因</b>：你的进店转化本就偏低，放大了影响
+            <div class="mini">
+              <div class="m"><div class="n" style="color:var(--bad)">-5%</div><div class="t">大盘外因</div></div>
+              <div class="m"><div class="n" style="color:var(--mid)">-2%</div><div class="t">竞争分流</div></div>
+              <div class="m"><div class="n" style="color:var(--primary)">-1%</div><div class="t">自身经营</div></div>
+            </div>
           </div>
         </div>
+        <div class="chat-q"><div class="b">那我该先做什么？</div></div>
+        <div class="chat-a">
+          <div class="av">🤖</div>
+          <div class="b">大盘和竞争你改不了，<b>抓自己能改的</b>：① 提升进店转化（橱窗/入口陈列），同类店做完平均 +12% 转化；② 对商圈内 1.2 万未触达潜客做定向触达。要我帮你<b>生成行动方案</b>吗？</div>
+        </div>
+        <div class="sec-title">💡 试试这样问</div>
+        <div class="chips">
+          <div class="chip">和同商圈同类店比，我差在哪？</div>
+          <div class="chip">这家店该续约还是关店？</div>
+          <div class="chip">附近还能再开一家吗？</div>
+          <div class="chip">哪些会员该召回？</div>
+        </div>
+        <div class="composer"><input placeholder="输入你的问题…"><div class="send">↑</div></div>
       </div>
-      <div class="chat-q"><div class="b">那我该先做什么？</div></div>
-      <div class="chat-a">
-        <div class="av">🤖</div>
-        <div class="b">大盘和竞争你改不了，<b>抓自己能改的</b>：① 提升进店转化（橱窗/入口陈列），同类店做完平均 +12% 转化；② 对商圈内 1.2 万未触达潜客做定向触达。要我帮你<b>生成行动方案</b>吗？</div>
+
+      <!-- 结构化数据查询 -->
+      <div id="ai-data" style="display:none">
+        <div class="qlabel">选择指标</div>
+        <div class="qrow" id="m-metrics"></div>
+        <div class="qlabel">时间范围</div>
+        <div class="qrow" id="m-times">
+          <span class="qchip" data-t="今日">今日</span>
+          <span class="qchip" data-t="本周">本周</span>
+          <span class="qchip on" data-t="本月">本月</span>
+          <span class="qchip" data-t="近30天">近30天</span>
+          <span class="qchip" data-t="自定义">自定义…</span>
+        </div>
+        <div class="card">
+          <div class="card-t"><span id="m-name">销售额</span><span class="more" id="m-period">本月 · 同比/环比</span></div>
+          <div class="metric">
+            <div class="big" id="m-val">—</div><div class="unit" id="m-unit"></div>
+            <div class="deltas"><div id="m-env"></div><div id="m-yoy"></div></div>
+          </div>
+          <div id="m-chart" style="margin-top:14px"></div>
+          <div class="ai" style="margin-top:14px;align-items:center">
+            <div class="ai-av" style="width:28px;height:28px;font-size:14px;border-radius:9px">🤖</div>
+            <div class="ai-bubble" style="font-size:11.5px"><b>AI 解读：</b><span id="m-insight"></span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-t">维度下钻 <span class="dtabs" id="m-dimtabs"></span></div>
+          <div id="m-dim"></div>
+        </div>
+        <div class="composer"><input placeholder="或用自然语言查：上月女装晚市销售…"><div class="send">↑</div></div>
       </div>
-      <div class="sec-title">💡 试试这样问</div>
-      <div class="chips">
-        <div class="chip">和同商圈同类店比，我差在哪？</div>
-        <div class="chip">这家店该续约还是关店？</div>
-        <div class="chip">附近还能再开一家吗？</div>
-        <div class="chip">哪些会员该召回？</div>
-      </div>
-      <div class="composer"><input placeholder="输入你的问题…"><div class="send">↑</div></div>
     </div>
 
     <!-- ============ 增长 ============ -->
@@ -372,10 +438,73 @@ function radar(){
 }
 document.getElementById('radar').innerHTML=radar();
 
-// chips -> ai
+// chips -> 填入对话框
 document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
-  const inp=document.querySelector('.composer input');inp.value=c.textContent;inp.focus();
+  const inp=document.querySelector('#ai-chat .composer input');inp.value=c.textContent;inp.focus();
 }));
+
+// ---- 数据查询模式 ----
+const DATA={
+  '销售额':{unit:'万元',val:'86.5',env:-4,yoy:-8,color:'var(--bad)',trend:[92,95,90,88,86,84,86.5],
+    insight:'环比 -4%，主因客流下滑；客单价回升部分对冲。建议优先抓进店转化。',
+    dims:{'按时段':[['午市',38],['晚市',32],['上午',18],['下午',12]],'按品类':[['女装',54],['男装',28],['配饰',18]]}},
+  '客流':{unit:'万人次',val:'1.24',env:-8,yoy:-12,color:'var(--bad)',trend:[1.5,1.45,1.38,1.32,1.28,1.22,1.24],
+    insight:'跑输商圈大盘 3 个点，同场新增竞品分流明显。',
+    dims:{'按时段':[['午市',40],['晚市',30],['上午',16],['下午',14]],'按来源':[['商场自然',62],['会员到店',24],['营销引流',14]]}},
+  '进店转化':{unit:'%',val:'18.6',env:-1,yoy:-2,color:'var(--mid)',trend:[20,19.5,19,18.8,18.4,18.2,18.6],
+    insight:'低于同场服饰店均值(24%)，是当前最大短板，优化空间最高。',
+    dims:{'按时段':[['晚市',22],['午市',19],['上午',15],['下午',14]]}},
+  '客单价':{unit:'元',val:'412',env:6,yoy:3,color:'var(--good)',trend:[388,392,400,405,402,408,412],
+    insight:'连带率提升带动，表现优于同类店，可继续强化连带销售。',
+    dims:{'按品类':[['女装',56],['男装',26],['配饰',18]],'会员/非会员':[['会员',520],['非会员',360]]}},
+  '会员复购':{unit:'%',val:'33.2',env:-2,yoy:-1,color:'var(--mid)',trend:[36,35,34.5,34,33.5,33,33.2],
+    insight:'沉睡会员增加，建议启动召回（见「增长」）。',
+    dims:{'会员分层':[['高价值',58],['活跃',40],['沉睡',22]]}},
+};
+let curMetric='销售额',curDim=null;
+function lineChart(arr,color){
+  const W=300,H=110,p=10,mn=Math.min(...arr),mx=Math.max(...arr);
+  const xs=i=>p+i*(W-2*p)/(arr.length-1), ys=v=>H-p-(v-mn)/((mx-mn)||1)*(H-2*p);
+  const pts=arr.map((v,i)=>[xs(i),ys(v)]);
+  const line=pts.map((q,i)=>(i?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1)).join(' ');
+  const area=line+` L ${xs(arr.length-1).toFixed(1)} ${H-p} L ${p} ${H-p} Z`;
+  const dots=pts.map(q=>`<circle cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="2.6" fill="${color}"/>`).join('');
+  return `<svg width="100%" viewBox="0 0 ${W} ${H}"><path d="${area}" fill="${color}" fill-opacity="0.12"/>`
+    +`<path d="${line}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linejoin="round"/>${dots}</svg>`
+    +`<div style="display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-top:2px"><span>6 期前</span><span>最新</span></div>`;
+}
+function renderData(){
+  const d=DATA[curMetric], f=x=>`${x>0?'▲':x<0?'▼':''} ${Math.abs(x)}%`, cls=x=>x>0?'up':x<0?'down':'';
+  document.getElementById('m-metrics').innerHTML=Object.keys(DATA).map(k=>`<span class="qchip ${k===curMetric?'on':''}" data-m="${k}">${k}</span>`).join('');
+  document.getElementById('m-name').textContent=curMetric;
+  document.getElementById('m-val').textContent=d.val;
+  document.getElementById('m-unit').textContent=d.unit;
+  document.getElementById('m-env').innerHTML=`<span class="${cls(d.env)}">环比 ${f(d.env)}</span>`;
+  document.getElementById('m-yoy').innerHTML=`<span class="${cls(d.yoy)}">同比 ${f(d.yoy)}</span>`;
+  document.getElementById('m-chart').innerHTML=lineChart(d.trend,d.color);
+  document.getElementById('m-insight').textContent=d.insight;
+  const dks=Object.keys(d.dims); if(!curDim||!d.dims[curDim])curDim=dks[0];
+  document.getElementById('m-dimtabs').innerHTML=dks.map(k=>`<span class="dtab ${k===curDim?'on':''}" data-d="${k}">${k}</span>`).join('');
+  const rows=d.dims[curDim], mxv=Math.max(...rows.map(r=>r[1]));
+  document.getElementById('m-dim').innerHTML=rows.map(r=>`<div class="dim"><div class="dim-h"><div class="l">${r[0]}</div><div class="s">${r[1]}</div></div><div class="bar"><i style="width:${Math.round(r[1]/mxv*100)}%;background:${d.color}"></i></div></div>`).join('');
+  document.querySelectorAll('#m-metrics .qchip').forEach(c=>c.onclick=()=>{curMetric=c.dataset.m;curDim=null;renderData()});
+  document.querySelectorAll('#m-dimtabs .dtab').forEach(c=>c.onclick=()=>{curDim=c.dataset.d;renderData()});
+}
+function aiView(v){
+  document.querySelectorAll('#ai .seg .o').forEach(o=>o.classList.toggle('on',o.dataset.v===v));
+  document.getElementById('ai-chat').style.display=v==='chat'?'block':'none';
+  document.getElementById('ai-data').style.display=v==='data'?'block':'none';
+  if(v==='data')renderData();
+}
+document.querySelectorAll('#ai .seg .o').forEach(o=>o.onclick=()=>aiView(o.dataset.v));
+document.querySelectorAll('#m-times .qchip').forEach(c=>c.onclick=()=>{
+  document.querySelectorAll('#m-times .qchip').forEach(x=>x.classList.remove('on'));c.classList.add('on');
+  document.getElementById('m-period').textContent=c.dataset.t+' · 同比/环比';
+});
+// 工作台「查数据」快捷入口 -> AI 标签 + 数据查询
+document.querySelectorAll('[data-jump]').forEach(q=>q.onclick=()=>{
+  document.querySelector('.nav .t[data-s="ai"]').click(); aiView('data');
+});
 </script>
 </body>
 </html>
