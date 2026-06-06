@@ -97,6 +97,16 @@
   .lbtn.primary{background:var(--primary);color:#fff}
   .lbtn.ghost{background:var(--primary-soft);color:var(--primary)}
 
+  /* 会员分析 */
+  .backbar{display:flex;align-items:center;gap:11px;margin-bottom:14px}
+  .backbar .bk{width:34px;height:34px;border-radius:11px;background:#fff;box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center;color:var(--text);cursor:pointer;flex:none}
+  .backbar .h{font-size:16px;font-weight:800}
+  .backbar .d{font-size:11px;color:var(--sub);margin-top:2px}
+  .split{display:flex;height:32px;border-radius:9px;overflow:hidden;font-size:11px;font-weight:800;color:#fff}
+  .split .f{display:flex;align-items:center;justify-content:center}
+  .mtags{margin-top:13px}
+  .mtag{display:inline-block;font-size:11px;font-weight:700;color:var(--primary);background:var(--primary-soft);padding:6px 11px;border-radius:20px;margin:0 7px 7px 0}
+
   /* 活动 / 天气监测 */
   .evt{display:flex;gap:11px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
   .evt:last-of-type{border:0}
@@ -287,7 +297,7 @@
         <div class="qa" data-jump="data"><span class="ibox primary" data-ic="search" data-sz="20"></span>查数据</div>
         <div class="qa"><span class="ibox good" data-ic="map-pin" data-sz="20"></span>商圈</div>
         <div class="qa"><span class="ibox bad" data-ic="crosshair" data-sz="20"></span>竞争</div>
-        <div class="qa"><span class="ibox mid" data-ic="file-text" data-sz="20"></span>报告</div>
+        <div class="qa" data-go="member"><span class="ibox good" data-ic="users" data-sz="20"></span>会员</div>
       </div>
 
       <div class="card">
@@ -424,6 +434,63 @@
       </div>
     </div>
 
+    <!-- ===== 会员分析（从工作台「会员」入口进入）===== -->
+    <div class="screen" id="member">
+      <div class="backbar">
+        <div class="bk" data-go="home" data-ic="arrow-left" data-sz="18"></div>
+        <div><div class="h">会员分析</div><div class="d">会员数据 × 第三方数据对接（LBS / 人口 / 消费）</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-t">会员概览 <span class="more">本月</span></div>
+        <div class="kpis4">
+          <div class="kpi4"><div class="k-v">1.2<span class="k-u">万</span></div><div class="k-l">会员数</div><div class="k-d up">▲3%</div></div>
+          <div class="kpi4"><div class="k-v">28<span class="k-u">%</span></div><div class="k-l">渗透率</div><div class="k-d down">▼1%</div></div>
+          <div class="kpi4"><div class="k-v">33<span class="k-u">%</span></div><div class="k-l">复购率</div><div class="k-d down">▼2%</div></div>
+          <div class="kpi4"><div class="k-v">412<span class="k-u">元</span></div><div class="k-l">会员客单</div><div class="k-d up">▲6%</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-t">会员画像 <span class="more">第三方数据增强</span></div>
+        <div class="split">
+          <div class="f" style="width:72%;background:var(--primary)">女 72%</div>
+          <div class="f" style="width:28%;background:#9DB0E8">男 28%</div>
+        </div>
+        <div style="height:14px"></div>
+        <div class="dim"><div class="dim-h"><div class="l">26–35 岁（核心客群）</div><div class="s">46%</div></div><div class="bar"><i style="width:46%;background:var(--primary)"></i></div></div>
+        <div class="dim"><div class="dim-h"><div class="l">18–25 岁</div><div class="s">27%</div></div><div class="bar"><i style="width:27%;background:#5B79D6"></i></div></div>
+        <div class="dim"><div class="dim-h"><div class="l">36–45 岁</div><div class="s">19%</div></div><div class="bar"><i style="width:19%;background:#8AA0E0"></i></div></div>
+        <div class="dim"><div class="dim-h"><div class="l">46 岁以上</div><div class="s">8%</div></div><div class="bar"><i style="width:8%;background:#B9C6EC"></i></div></div>
+        <div class="mtags">
+          <span class="mtag">都市白领</span><span class="mtag">轻奢偏好</span><span class="mtag">职场通勤</span><span class="mtag">亲子家庭</span><span class="mtag">潮流敏感</span><span class="mtag">中高消费力</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-t">客群来源地分布 <span class="more">LBS · 居住/工作地</span></div>
+        <div class="dim"><div class="dim-h"><div class="l">≤ 1km（近场）</div><div class="s">22%</div></div><div class="bar"><i style="width:22%;background:var(--good)"></i></div></div>
+        <div class="dim"><div class="dim-h"><div class="l">1–3km（核心商圈）</div><div class="s">41%</div></div><div class="bar"><i style="width:41%;background:var(--primary)"></i></div></div>
+        <div class="dim"><div class="dim-h"><div class="l">3–5km</div><div class="s">24%</div></div><div class="bar"><i style="width:24%;background:var(--mid)"></i></div></div>
+        <div class="dim"><div class="dim-h"><div class="l">&gt; 5km（跨区/跨城）</div><div class="s">13%</div></div><div class="bar"><i style="width:13%;background:var(--muted)"></i></div></div>
+        <div style="font-size:11.5px;color:var(--sub);font-weight:700;margin:15px 0 2px">Top 来源地</div>
+        <div class="evt"><span class="ibox primary s34" data-ic="building" data-sz="18"></span><div class="c"><div class="h">来福士写字楼群</div><div class="d">职场 · 0.8km</div></div><span class="evt-tag up">18%</span></div>
+        <div class="evt"><span class="ibox primary s34" data-ic="home" data-sz="18"></span><div class="c"><div class="h">绿城·桂花城 等住宅</div><div class="d">居住 · 1.2km</div></div><span class="evt-tag up">14%</span></div>
+        <div class="evt"><span class="ibox primary s34" data-ic="navigation" data-sz="18"></span><div class="c"><div class="h">地铁 1 号线龙翔桥站</div><div class="d">通勤 · 0.5km</div></div><span class="evt-tag up">9%</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-t">潜客机会 · 高潜小区 / 场景 <span class="more">画像匹配 + 关联场景</span></div>
+        <div class="evt"><span class="ibox good s34" data-ic="home" data-sz="18"></span><div class="c"><div class="h">绿城·桂花城（住宅 · 1.2km）</div><div class="d">画像高度匹配、会员渗透低 · 潜客 ~3,200</div></div><span class="evt-tag up">匹配高</span></div>
+        <div class="evt"><span class="ibox good s34" data-ic="building" data-sz="18"></span><div class="c"><div class="h">来福士写字楼群（职场 · 0.8km）</div><div class="d">白领密集、午晚高峰 · 潜客 ~2,600</div></div><span class="evt-tag up">匹配高</span></div>
+        <div class="evt"><span class="ibox mid s34" data-ic="navigation" data-sz="18"></span><div class="c"><div class="h">龙翔桥地铁通勤人群（场景）</div><div class="d">通勤动线关联 · 潜客 ~4,000</div></div><span class="evt-tag down">匹配中</span></div>
+        <div class="evt"><span class="ibox mid s34" data-ic="users" data-sz="18"></span><div class="c"><div class="h">周边亲子 / 健身场景（关联）</div><div class="d">生活方式关联、异业可联动 · 潜客 ~1,100</div></div><span class="evt-tag down">匹配中</span></div>
+        <div class="evt-sug"><b>AI 建议</b>：对「绿城·桂花城 / 来福士写字楼」优先做定向触达与异业合作；通勤人群投放站点广告承接。</div>
+      </div>
+
+      <div class="todo" data-go="grow" style="cursor:pointer"><span class="ibox primary s34" data-ic="target" data-sz="20"></span><div class="c"><b>圈选潜客人群</b>：基于以上来源地与场景，一键生成可触达人群包。</div><div class="go">去圈人</div></div>
+    </div>
+
   </div>
 
   <div class="nav">
@@ -473,6 +540,8 @@ const ICONS={
   sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>',
   megaphone:'<path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
   'cloud-rain':'<path d="M20 16.2A4.5 4.5 0 0 0 17.5 8h-1.8A7 7 0 1 0 4 14.9"/><path d="M8 19v2M12 19v3M16 19v2"/>',
+  'arrow-left':'<path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>',
+  navigation:'<polygon points="3 11 22 2 13 21 11 13 3 11"/>',
 };
 function svg(n,size,sw){size=size||22;sw=sw||1.9;return `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${ICONS[n]||''}</svg>`}
 function injectIcons(root){(root||document).querySelectorAll('[data-ic]').forEach(e=>{
@@ -487,6 +556,15 @@ document.querySelectorAll('.nav .t').forEach(t=>{
     document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(s).classList.add('active');
     document.querySelector('.body').scrollTop=0;});
 });
+// 屏幕跳转（非底栏页面，如会员分析）
+function goScreen(id){
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const t=document.querySelector('.nav .t[data-s="'+id+'"]');
+  if(t){document.querySelectorAll('.nav .t').forEach(x=>x.classList.remove('on'));t.classList.add('on');}
+  document.querySelector('.body').scrollTop=0;
+}
+document.querySelectorAll('[data-go]').forEach(e=>e.addEventListener('click',()=>goScreen(e.dataset.go)));
 
 // ===== 仪表盘 =====
 function gauge(score){const r=45,c=2*Math.PI*r,off=c*(1-score/100);
@@ -566,9 +644,10 @@ function lockHTML(title,dataname,tip){
     `<div class="lock"><span class="lk-ic">${svg('lock',18)}</span><div class="c"><b>${dataname}未接入</b><div class="lock-d">${tip}</div></div></div>`+
     `<div class="lock-btns"><div class="lbtn primary">${svg('upload',15)}上传 / 录入</div><div class="lbtn ghost">${svg('link',15)}帮我对接 · 增值</div></div>`;
 }
-function dataHTML(title,rows){
+function dataHTML(title,rows,jump){
   const dn=x=>`<div class="k-d ${x&&x.indexOf('▼')>=0?'down':x&&x.indexOf('▲')>=0?'up':''}">${x||''}</div>`;
-  return `<div class="card-t">${title} <span class="more">本月 · 环比</span></div><div class="kpis4">`+
+  const more=jump?`<span class="more" onclick="goScreen('${jump}')" style="cursor:pointer;color:var(--primary);font-weight:700">查看分析 →</span>`:`<span class="more">本月 · 环比</span>`;
+  return `<div class="card-t">${title} ${more}</div><div class="kpis4">`+
     rows.map(r=>`<div class="kpi4"><div class="k-v">${r[1]}</div><div class="k-l">${r[0]}</div>${dn(r[2])}</div>`).join('')+`</div>`;
 }
 function renderStage(){
@@ -582,7 +661,7 @@ function renderStage(){
   document.getElementById('h-sug').textContent=d.ai.sug;
   document.getElementById('h-verdict-t').textContent=d.ai.verdict;
   document.getElementById('h-verdict').className='verdict '+(d.ai.vc||'good');
-  document.getElementById('member-card').innerHTML=d.mdata?dataHTML('会员概览',d.mdata):lockHTML('会员概览','会员/CRM 数据','上传会员数据，解锁会员 RFM 与潜客分析');
+  document.getElementById('member-card').innerHTML=d.mdata?dataHTML('会员概览',d.mdata,'member'):lockHTML('会员概览','会员/CRM 数据','上传会员数据，解锁会员 RFM 与潜客分析');
   document.getElementById('op-card').innerHTML=d.odata?dataHTML('经营概览',d.odata):lockHTML('经营概览','POS/销售数据','上传经营数据，解锁经营诊断与综合评分');
 }
 document.querySelectorAll('.stage-seg .so').forEach(o=>o.onclick=()=>{stage=o.dataset.stage;document.querySelectorAll('.stage-seg .so').forEach(x=>x.classList.toggle('on',x.dataset.stage===stage));renderStage();});
