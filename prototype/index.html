@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>YYT-Store · 门店智数 · 移动端原型</title>
+<style>
+  :root{
+    --primary:#3056D3; --primary-soft:#EAF0FF; --primary-dark:#1E3A9E;
+    --bg:#F4F5F9; --card:#FFFFFF; --line:#ECEEF3;
+    --good:#15A65B; --good-soft:#E5F6ED;
+    --mid:#E8920C; --mid-soft:#FDF1DD;
+    --bad:#E0463C; --bad-soft:#FBE7E5;
+    --text:#171A24; --sub:#5A6172; --muted:#9AA0AE;
+    --shadow:0 6px 24px rgba(24,32,64,.07);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    background:linear-gradient(135deg,#2a3656,#1b2138);
+    display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;color:var(--text);
+  }
+  /* phone frame */
+  .phone{width:390px;height:820px;background:var(--bg);border-radius:44px;position:relative;
+    box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 0 11px #0d0f16,0 0 0 13px #2a2d39;overflow:hidden;display:flex;flex-direction:column}
+  .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:150px;height:30px;background:#0d0f16;border-radius:0 0 18px 18px;z-index:50}
+  .statusbar{height:48px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;padding:0 26px 6px;font-size:13px;font-weight:600;color:var(--text)}
+  .statusbar .right{display:flex;gap:6px;align-items:center}
+  /* app header */
+  .appbar{flex:none;padding:6px 18px 12px;display:flex;align-items:center;justify-content:space-between;background:var(--bg)}
+  .store{display:flex;flex-direction:column;gap:2px}
+  .store .name{font-size:17px;font-weight:700;display:flex;align-items:center;gap:6px}
+  .store .meta{font-size:11.5px;color:var(--sub)}
+  .switch{font-size:11px;color:var(--primary);background:var(--primary-soft);padding:5px 10px;border-radius:20px;font-weight:600}
+  .bell{width:36px;height:36px;border-radius:50%;background:#fff;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;position:relative;font-size:16px}
+  .bell .dot{position:absolute;top:8px;right:9px;width:7px;height:7px;background:var(--bad);border-radius:50%;border:1.5px solid #fff}
+  /* scroll body */
+  .body{flex:1;overflow-y:auto;padding:4px 16px 96px;-webkit-overflow-scrolling:touch}
+  .body::-webkit-scrollbar{display:none}
+  .screen{display:none;animation:fade .25s ease}
+  .screen.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .card{background:var(--card);border-radius:18px;padding:16px;box-shadow:var(--shadow);margin-bottom:14px}
+  .card-t{font-size:13px;font-weight:700;color:var(--text);margin:0 0 12px;display:flex;align-items:center;justify-content:space-between}
+  .card-t .more{font-size:11px;color:var(--muted);font-weight:500}
+  .pill{font-size:10.5px;padding:3px 9px;border-radius:20px;font-weight:700}
+  .pill.good{background:var(--good-soft);color:var(--good)} .pill.mid{background:var(--mid-soft);color:var(--mid)} .pill.bad{background:var(--bad-soft);color:var(--bad)}
+
+  /* hero score */
+  .hero{background:linear-gradient(135deg,#3863e6,#2742b5);color:#fff;border-radius:22px;padding:18px;margin-bottom:14px;box-shadow:0 12px 30px rgba(48,86,211,.35);position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;background:rgba(255,255,255,.08);border-radius:50%}
+  .hero-top{display:flex;align-items:center;gap:16px;position:relative;z-index:2}
+  .gauge{width:104px;height:104px;flex:none;position:relative}
+  .gauge .val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .gauge .num{font-size:30px;font-weight:800;line-height:1}
+  .gauge .lab{font-size:10px;opacity:.85;margin-top:2px}
+  .hero-info{flex:1}
+  .hero-info .grade{font-size:15px;font-weight:700;display:flex;align-items:center;gap:7px}
+  .hero-info .tag{background:rgba(255,255,255,.2);font-size:10px;padding:2px 8px;border-radius:20px}
+  .hero-info .trend{font-size:12px;opacity:.92;margin-top:6px}
+  .hero-info .comp{font-size:11px;opacity:.8;margin-top:8px;background:rgba(255,255,255,.12);padding:6px 10px;border-radius:10px;display:inline-block}
+
+  /* AI diagnosis */
+  .ai{display:flex;gap:11px;align-items:flex-start}
+  .ai-av{width:34px;height:34px;flex:none;border-radius:11px;background:linear-gradient(135deg,#6a8bff,#3056D3);display:flex;align-items:center;justify-content:center;font-size:18px}
+  .ai-bubble{font-size:13px;line-height:1.65;color:var(--text)}
+  .ai-bubble b{color:var(--primary)}
+  .verdict{margin-top:10px;font-size:12px;font-weight:700;color:var(--good);background:var(--good-soft);padding:8px 11px;border-radius:10px;display:flex;align-items:center;gap:6px}
+
+  /* dimension bars */
+  .dim{margin-bottom:13px}
+  .dim:last-child{margin-bottom:0}
+  .dim-h{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:6px}
+  .dim-h .l{display:flex;align-items:center;gap:6px;color:var(--text);font-weight:600}
+  .dim-h .l .ic{font-size:13px}
+  .dim-h .s{font-weight:800;font-size:13px}
+  .bar{height:7px;background:#EEF0F5;border-radius:6px;overflow:hidden}
+  .bar > i{display:block;height:100%;border-radius:6px}
+  .side{font-size:9.5px;color:var(--muted);margin-left:4px;font-weight:500}
+
+  /* change cards */
+  .chg{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .chg:last-child{border:0;padding-bottom:0}
+  .chg .ic{width:34px;height:34px;border-radius:10px;flex:none;display:flex;align-items:center;justify-content:center;font-size:16px}
+  .chg .c{flex:1}
+  .chg .c .h{font-size:12.5px;font-weight:600}
+  .chg .c .d{font-size:11px;color:var(--sub);margin-top:2px;line-height:1.5}
+  .chg .v{font-size:14px;font-weight:800;align-self:center}
+
+  /* todo / alert */
+  .todo{display:flex;gap:10px;align-items:flex-start;padding:11px;background:var(--primary-soft);border-radius:12px;margin-bottom:9px}
+  .todo .ic{font-size:16px}
+  .todo .c{flex:1;font-size:12px;line-height:1.55}
+  .todo .c b{color:var(--primary-dark)}
+  .todo .go{font-size:11px;color:#fff;background:var(--primary);padding:5px 11px;border-radius:18px;font-weight:600;align-self:center;white-space:nowrap}
+  .alert{display:flex;gap:10px;align-items:flex-start;padding:11px;background:var(--bad-soft);border-radius:12px}
+  .alert .ic{font-size:16px}
+  .alert .c{flex:1;font-size:12px;line-height:1.55;color:#8a2b23}
+
+  /* radar */
+  .radar-wrap{display:flex;justify-content:center;padding:4px 0 6px}
+
+  /* matrix */
+  .matrix{position:relative;height:230px;margin:6px 4px 4px;border-radius:14px;background:
+    linear-gradient(0deg,transparent 49.5%,#dfe3ec 49.5%,#dfe3ec 50.5%,transparent 50.5%),
+    linear-gradient(90deg,transparent 49.5%,#dfe3ec 49.5%,#dfe3ec 50.5%,transparent 50.5%),
+    #F8F9FC}
+  .quad{position:absolute;width:50%;height:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8px}
+  .quad .qt{font-size:11px;font-weight:800;margin-bottom:3px}
+  .quad .qd{font-size:9px;color:var(--muted);line-height:1.4}
+  .q1{top:0;right:0} .q2{top:0;left:0} .q3{bottom:0;left:0} .q4{bottom:0;right:0}
+  .dotme{position:absolute;width:18px;height:18px;background:var(--bad);border-radius:50%;border:3px solid #fff;box-shadow:0 3px 10px rgba(224,70,60,.5);z-index:5;transform:translate(-50%,50%)}
+  .dotme::after{content:"本店";position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:800;color:var(--bad);white-space:nowrap;background:#fff;padding:1px 5px;border-radius:8px;box-shadow:var(--shadow)}
+  .axlab{position:absolute;font-size:9px;color:var(--muted);font-weight:600}
+
+  /* chat */
+  .chat-q{display:flex;justify-content:flex-end;margin:10px 0}
+  .chat-q .b{background:var(--primary);color:#fff;font-size:13px;padding:10px 13px;border-radius:16px 16px 4px 16px;max-width:80%;line-height:1.55}
+  .chat-a{display:flex;gap:9px;margin:10px 0}
+  .chat-a .av{width:30px;height:30px;flex:none;border-radius:9px;background:linear-gradient(135deg,#6a8bff,#3056D3);display:flex;align-items:center;justify-content:center;font-size:15px}
+  .chat-a .b{background:#fff;font-size:13px;padding:11px 13px;border-radius:4px 16px 16px 16px;max-width:82%;line-height:1.62;box-shadow:var(--shadow)}
+  .chat-a .b b{color:var(--primary)}
+  .chat-a .b .mini{margin-top:9px;display:flex;gap:6px}
+  .chat-a .b .mini .m{flex:1;background:var(--bg);border-radius:9px;padding:7px;text-align:center}
+  .chat-a .b .mini .m .n{font-size:15px;font-weight:800;color:var(--text)}
+  .chat-a .b .mini .m .t{font-size:8.5px;color:var(--muted);margin-top:2px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .chip{font-size:11.5px;background:#fff;border:1px solid var(--line);color:var(--sub);padding:8px 12px;border-radius:20px;box-shadow:var(--shadow)}
+  .chip:active{background:var(--primary-soft)}
+  .composer{display:flex;gap:8px;align-items:center;margin-top:14px;background:#fff;border-radius:24px;padding:6px 6px 6px 16px;box-shadow:var(--shadow)}
+  .composer input{flex:1;border:0;outline:0;font-size:13px;background:transparent}
+  .composer .send{width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px}
+
+  .sec-title{font-size:12px;font-weight:700;color:var(--sub);margin:16px 4px 8px;display:flex;align-items:center;gap:6px}
+
+  /* bottom nav */
+  .nav{position:absolute;bottom:0;left:0;right:0;height:74px;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;padding:6px 8px 18px;z-index:40}
+  .nav .t{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--muted);font-size:10px;font-weight:600}
+  .nav .t .i{font-size:21px;line-height:1}
+  .nav .t.on{color:var(--primary)}
+  .nav .ai-btn{flex:none;width:54px;margin-top:-20px}
+  .nav .ai-btn .i{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#6a8bff,#3056D3);color:#fff;display:flex;align-items:center;justify-content:center;font-size:23px;box-shadow:0 8px 20px rgba(48,86,211,.45)}
+  .nav .ai-btn{color:var(--primary)}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="notch"></div>
+  <div class="statusbar">
+    <span>9:41</span>
+    <span class="right">📶 🛜 🔋</span>
+  </div>
+
+  <div class="appbar">
+    <div class="store">
+      <div class="name">示例服饰 · 杭州万象城店 <span style="font-size:11px;color:var(--muted)">▾</span></div>
+      <div class="meta">购物中心 · L2 · 服饰零售 · 数据更新 06-05</div>
+    </div>
+    <div class="bell">🔔<span class="dot"></span></div>
+  </div>
+
+  <div class="body">
+
+    <!-- ============ 工作台 ============ -->
+    <div class="screen active" id="home">
+      <div class="hero">
+        <div class="hero-top">
+          <div class="gauge" id="gauge"></div>
+          <div class="hero-info">
+            <div class="grade">综合健康分 <span class="tag">偏弱</span></div>
+            <div class="trend">较上月 <b>▼ 3 分</b> ｜ 同类店中位 60</div>
+            <div class="comp">📍 点位潜力 70（高）　🛠 经营表现 46（低）</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="ai">
+          <div class="ai-av">🤖</div>
+          <div>
+            <div class="ai-bubble">综合健康分 <b>49（偏弱）</b>。<b>点位是好的</b>——商圈机会 74、客群充足；问题出在<b>经营</b>：进店转化（后35%）与会员渗透率（后30%）明显低于同类店，叠加近距竞品偏多。</div>
+            <div class="verdict">✅ 值得投入改善，不建议止损</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec-title">📌 待办建议</div>
+      <div class="todo">
+        <div class="ic">🎯</div>
+        <div class="c"><b>优化进店转化</b>：周末路过到店转化仅 18%，低于同场服饰店。建议调整橱窗与入口陈列。</div>
+        <div class="go">去诊断</div>
+      </div>
+      <div class="todo">
+        <div class="ic">👥</div>
+        <div class="c"><b>启动会员渗透</b>：商圈内 1.2 万潜客未触达，建议定向触达。</div>
+        <div class="go">去行动</div>
+      </div>
+
+      <div class="sec-title">⚠️ 预警</div>
+      <div class="alert">
+        <div class="ic">🏪</div>
+        <div class="c"><b>竞争加剧</b>：本月同场新开 2 家女装竞品（距 60m / 120m），竞争压力分升至 82。建议关注客流分流。</div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <div class="card-t">本周关键变化 <span class="more">近 7 天</span></div>
+        <div class="chg">
+          <div class="ic" style="background:var(--bad-soft)">📉</div>
+          <div class="c"><div class="h">门店客流</div><div class="d">商圈大盘 -5%，本店 -8%，跑输大盘 3 个点</div></div>
+          <div class="v" style="color:var(--bad)">-8%</div>
+        </div>
+        <div class="chg">
+          <div class="ic" style="background:var(--good-soft)">💳</div>
+          <div class="c"><div class="h">客单价</div><div class="d">连带率提升带动，优于上周</div></div>
+          <div class="v" style="color:var(--good)">+6%</div>
+        </div>
+        <div class="chg">
+          <div class="ic" style="background:var(--mid-soft)">🔄</div>
+          <div class="c"><div class="h">会员复购</div><div class="d">沉睡会员增加，需召回</div></div>
+          <div class="v" style="color:var(--mid)">-2%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 体检 ============ -->
+    <div class="screen" id="check">
+      <div class="card">
+        <div class="card-t">门店 360° 五圈层雷达 <span class="pill mid">综合 49</span></div>
+        <div class="radar-wrap"><div id="radar"></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-t">六维评分 <span class="more">对标：一线·购物中心·服饰</span></div>
+        <div id="dims"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-t">点位 vs 经营 诊断 <span class="pill bad">经营问题</span></div>
+        <div class="matrix">
+          <div class="quad q1"><div class="qt" style="color:var(--good)">✅ 健康</div><div class="qd">点位好·经营到位</div></div>
+          <div class="quad q2"><div class="qt" style="color:var(--mid)">⚠️ 经营问题</div><div class="qd">点位有潜力<br>没吃透·值得投入</div></div>
+          <div class="quad q3"><div class="qt" style="color:var(--muted)">🔶 点位天花板</div><div class="qd">已做到位·盘子有限</div></div>
+          <div class="quad q4"><div class="qt" style="color:var(--bad)">⛔ 双重问题</div><div class="qd">评估止损</div></div>
+          <div class="dotme" style="left:25%;bottom:60%"></div>
+          <div class="axlab" style="left:6px;top:50%">低 ← 经营表现 → 高</div>
+          <div class="axlab" style="left:50%;bottom:4px;transform:translateX(-50%)">低 ← 点位潜力 → 高</div>
+        </div>
+        <div style="font-size:11.5px;color:var(--sub);line-height:1.6;margin-top:10px;background:var(--bg);padding:10px;border-radius:10px">
+          🔑 <b>桥梁指标 · 会员渗透率 30%</b>：可达客群充足但渗透/转化低 → 是<b style="color:var(--mid)">经营问题</b>而非点位问题，<b style="color:var(--good)">值得继续跟进</b>。
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ AI 助手 ============ -->
+    <div class="screen" id="ai">
+      <div class="sec-title">🤖 AI 数据军师 · 问我任何门店问题</div>
+      <div class="chat-q"><div class="b">我这家店周末客流为什么跌？</div></div>
+      <div class="chat-a">
+        <div class="av">🤖</div>
+        <div class="b">本店上周末客流 <b>-8%</b>。归因拆解：<br>• <b>外因</b>：所在商圈大盘 -5%（节后淡季）<br>• <b>竞争</b>：同场新开 2 家女装，分流约 -2%<br>• <b>内因</b>：你的进店转化本就偏低，放大了影响
+          <div class="mini">
+            <div class="m"><div class="n" style="color:var(--bad)">-5%</div><div class="t">大盘外因</div></div>
+            <div class="m"><div class="n" style="color:var(--mid)">-2%</div><div class="t">竞争分流</div></div>
+            <div class="m"><div class="n" style="color:var(--primary)">-1%</div><div class="t">自身经营</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-q"><div class="b">那我该先做什么？</div></div>
+      <div class="chat-a">
+        <div class="av">🤖</div>
+        <div class="b">大盘和竞争你改不了，<b>抓自己能改的</b>：① 提升进店转化（橱窗/入口陈列），同类店做完平均 +12% 转化；② 对商圈内 1.2 万未触达潜客做定向触达。要我帮你<b>生成行动方案</b>吗？</div>
+      </div>
+      <div class="sec-title">💡 试试这样问</div>
+      <div class="chips">
+        <div class="chip">和同商圈同类店比，我差在哪？</div>
+        <div class="chip">这家店该续约还是关店？</div>
+        <div class="chip">附近还能再开一家吗？</div>
+        <div class="chip">哪些会员该召回？</div>
+      </div>
+      <div class="composer"><input placeholder="输入你的问题…"><div class="send">↑</div></div>
+    </div>
+
+    <!-- ============ 增长 ============ -->
+    <div class="screen" id="grow">
+      <div class="sec-title">🚀 增长行动 · 从诊断到动作</div>
+      <div class="card">
+        <div class="card-t">增长缺口诊断</div>
+        <div class="dim"><div class="dim-h"><div class="l"><span class="ic">🗺️</span>覆盖缺口</div><div class="s" style="color:var(--bad)">大</div></div><div class="bar"><i style="width:72%;background:var(--bad)"></i></div></div>
+        <div class="dim"><div class="dim-h"><div class="l"><span class="ic">🎯</span>转化缺口</div><div class="s" style="color:var(--mid)">中</div></div><div class="bar"><i style="width:55%;background:var(--mid)"></i></div></div>
+        <div class="dim"><div class="dim-h"><div class="l"><span class="ic">🔁</span>留存缺口</div><div class="s" style="color:var(--mid)">中</div></div><div class="bar"><i style="width:48%;background:var(--mid)"></i></div></div>
+      </div>
+      <div class="todo"><div class="ic">📍</div><div class="c"><b>定向营销区域</b>：识别 3 个高潜未覆盖网格，建议地推 / 异业投放。</div><div class="go">查看</div></div>
+      <div class="todo"><div class="ic">🎯</div><div class="c"><b>潜客精准营销</b>：1.2 万潜客已分层，A 级 2,400 人优先触达。</div><div class="go">圈人</div></div>
+      <div class="todo"><div class="ic">🔔</div><div class="c"><b>流失会员召回</b>：860 名高价值沉睡会员，生成召回人群包。</div><div class="go">召回</div></div>
+      <div class="card">
+        <div class="card-t">商圈潜客池 <span class="pill good">1.2 万可触达</span></div>
+        <div class="dim"><div class="dim-h"><div class="l">A 级（到访未成交）</div><div class="s">2,400</div></div><div class="bar"><i style="width:20%;background:var(--good)"></i></div></div>
+        <div class="dim"><div class="dim-h"><div class="l">B 级（竞品客群）</div><div class="s">4,800</div></div><div class="bar"><i style="width:40%;background:var(--primary)"></i></div></div>
+        <div class="dim"><div class="dim-h"><div class="l">C 级（商圈泛人群）</div><div class="s">5,000</div></div><div class="bar"><i style="width:42%;background:var(--muted)"></i></div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav">
+    <div class="t on" data-s="home"><span class="i">🏠</span>工作台</div>
+    <div class="t" data-s="check"><span class="i">📊</span>体检</div>
+    <div class="t ai-btn" data-s="ai"><span class="i">🤖</span></div>
+    <div class="t" data-s="grow"><span class="i">🚀</span>增长</div>
+    <div class="t" data-s="me"><span class="i">👤</span>我的</div>
+  </div>
+</div>
+
+<script>
+// ---- nav ----
+document.querySelectorAll('.nav .t').forEach(t=>{
+  t.addEventListener('click',()=>{
+    const s=t.dataset.s; if(s==='me')return;
+    document.querySelectorAll('.nav .t').forEach(x=>x.classList.remove('on'));
+    t.classList.add('on');
+    document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+    document.getElementById(s).classList.add('active');
+    document.querySelector('.body').scrollTop=0;
+  });
+});
+
+// ---- gauge (ring) ----
+function gauge(score){
+  const r=44,c=2*Math.PI*r, off=c*(1-score/100);
+  const col = score>=70?'#fff':score>=55?'#FFE08A':'#FFC4BE';
+  return `<svg width="104" height="104" viewBox="0 0 104 104">
+    <circle cx="52" cy="52" r="${r}" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="9"/>
+    <circle cx="52" cy="52" r="${r}" fill="none" stroke="${col}" stroke-width="9" stroke-linecap="round"
+      stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 52 52)"/>
+  </svg>
+  <div class="val"><div class="num">${score}</div><div class="lab">/100</div></div>`;
+}
+document.getElementById('gauge').innerHTML=gauge(49);
+
+// ---- dimensions ----
+const dims=[
+  {k:'商圈机会',ic:'🌆',s:74,side:'点位'},
+  {k:'载体质量',ic:'🏬',s:62,side:'点位'},
+  {k:'竞争优势',ic:'⚔️',s:18,side:'点位',note:'压力82'},
+  {k:'客流转化',ic:'🚶',s:42,side:'经营'},
+  {k:'会员经营',ic:'👥',s:45,side:'经营'},
+  {k:'经营达成',ic:'💰',s:50,side:'经营'},
+];
+const col=s=>s>=70?'var(--good)':s>=55?'#3FAE6B':s>=40?'var(--mid)':'var(--bad)';
+document.getElementById('dims').innerHTML=dims.map(d=>`
+  <div class="dim">
+    <div class="dim-h"><div class="l"><span class="ic">${d.ic}</span>${d.k}<span class="side">${d.note||d.side}</span></div>
+    <div class="s" style="color:${col(d.s)}">${d.s}</div></div>
+    <div class="bar"><i style="width:${d.s}%;background:${col(d.s)}"></i></div>
+  </div>`).join('');
+
+// ---- radar ----
+function radar(){
+  const data=dims.map(d=>({k:d.k,v:d.s}));
+  const N=data.length,cx=140,cy=140,R=98;
+  const pt=(i,r)=>{const a=-Math.PI/2+i*2*Math.PI/N;return [cx+r*Math.cos(a),cy+r*Math.sin(a)]};
+  let grid='';
+  [.25,.5,.75,1].forEach(f=>{let p=data.map((_,i)=>pt(i,R*f).join(',')).join(' ');grid+=`<polygon points="${p}" fill="none" stroke="#E6E9F0" stroke-width="1"/>`});
+  let axes='',labels='';
+  data.forEach((d,i)=>{const[x,y]=pt(i,R);axes+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#E6E9F0"/>`;
+    const[lx,ly]=pt(i,R+18);labels+=`<text x="${lx}" y="${ly}" font-size="10.5" font-weight="600" fill="#5A6172" text-anchor="middle" dominant-baseline="middle">${d.k}</text>`;});
+  const poly=data.map((d,i)=>pt(i,R*d.v/100).join(',')).join(' ');
+  const dots=data.map((d,i)=>{const[x,y]=pt(i,R*d.v/100);return `<circle cx="${x}" cy="${y}" r="3" fill="#3056D3"/>`}).join('');
+  return `<svg width="280" height="280" viewBox="0 0 280 280">${grid}${axes}
+    <polygon points="${poly}" fill="rgba(48,86,211,.18)" stroke="#3056D3" stroke-width="2"/>${dots}${labels}</svg>`;
+}
+document.getElementById('radar').innerHTML=radar();
+
+// chips -> ai
+document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
+  const inp=document.querySelector('.composer input');inp.value=c.textContent;inp.focus();
+}));
+</script>
+</body>
+</html>
