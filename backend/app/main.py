@@ -101,20 +101,31 @@ def workbench(sid: str, db: Session = Depends(get_db)):
         verdict = "点位天花板，理性看待预期"; vc = "mid"
     else:
         verdict = "健康门店，保持并复制经验"; vc = "good"
-    diagnosis = (f"综合健康分 {sc['composite']}（{sc['grade']}）。"
-                 f"点位潜力 {sc['point_potential']}、经营表现 {sc['operation_performance']}。")
-    if q["code"] == "ops":
-        diagnosis += f"点位是好的，问题在经营：会员渗透率仅 {pen}%，需提升转化与渗透。"
     # 待办：取经营侧最低的两维
     op_dims = sorted([d for d in sc["dimensions"] if d["side"] == "op"], key=lambda d: d["score"])
+    weak = op_dims[0]["name"] if op_dims else "经营"
+    pen_i = round(pen) if pen is not None else "—"
+    # AI 诊断：精简为「问题 → 建议」(结论由 verdict 承载，不再重复健康分)
+    if q["code"] == "ops":
+        problem = f"点位是好的（潜力 {sc['point_potential']}），问题在经营——会员渗透率仅 {pen_i}%、{weak}偏低。"
+        suggestion = "优先优化进店转化，并对商圈潜客做定向触达提升渗透。"
+    elif q["code"] == "double":
+        problem = f"点位与经营双弱（潜力 {sc['point_potential']} / 表现 {sc['operation_performance']}）。"
+        suggestion = "先评估点位价值，再决定调改方向或止损。"
+    elif q["code"] == "ceiling":
+        problem = f"经营已到位（表现 {sc['operation_performance']}），但点位潜力有限（{sc['point_potential']}）。"
+        suggestion = "控制投入、维持效率，对增量理性预期。"
+    else:
+        problem = f"点位与经营均衡（潜力 {sc['point_potential']} / 表现 {sc['operation_performance']}），整体健康。"
+        suggestion = "保持现状，提炼可复制经验向其他门店推广。"
     todos = [{"name": d["name"], "icon": d["icon"], "score": d["score"]} for d in op_dims[:2]]
     return {
         "store": {"id": s.id, "name": s.name,
                   "meta": f"{s.carrier_type} · {s.biz_type} · {s.city}"},
         "composite": sc["composite"], "grade": sc["grade"], "trend_delta": s.trend_delta,
         "point_potential": sc["point_potential"], "operation_performance": sc["operation_performance"],
-        "quadrant": q, "verdict": verdict, "verdict_color": vc, "diagnosis": diagnosis,
-        "todos": todos,
+        "quadrant": q, "verdict": verdict, "verdict_color": vc,
+        "problem": problem, "suggestion": suggestion, "todos": todos,
     }
 
 

@@ -71,6 +71,44 @@
   .hero-info .trend{font-size:12px;opacity:.94;margin-top:7px}
   .hero-info .comp{font-size:11px;opacity:.92;margin-top:9px;background:rgba(255,255,255,.14);padding:7px 11px;border-radius:11px;display:inline-block}
 
+  /* 顶部问候 */
+  .greet{display:flex;align-items:center;gap:7px;padding:6px 20px 0}
+  .greet .g-ic{color:var(--mid);display:inline-flex}
+  .greet .g-hi{font-size:13px;font-weight:800}
+  .greet .g-date{font-size:11px;color:var(--sub);margin-left:auto}
+  /* 数据接入阶段切换 */
+  .stage{display:flex;align-items:center;gap:10px;margin:2px 2px 12px}
+  .stage-l{font-size:11px;color:var(--muted);font-weight:800;white-space:nowrap}
+  .stage-seg{display:flex;background:#E6EAF2;border-radius:11px;padding:3px;flex:1}
+  .stage-seg .so{flex:1;text-align:center;font-size:11.5px;font-weight:700;padding:7px;border-radius:8px;color:var(--sub)}
+  .stage-seg .so.on{background:#fff;color:var(--primary);box-shadow:var(--shadow-sm)}
+  .comp2{font-size:11px;opacity:.92;margin-top:6px;background:rgba(255,255,255,.16);padding:4px 9px;border-radius:9px;display:inline-block}
+  .ai-sug{font-size:12.5px;line-height:1.6;margin-top:9px}
+  .ai-sug b{color:var(--primary)}
+  .verdict.mid{color:var(--mid);background:var(--mid-soft)}
+  .verdict.bad{color:var(--bad);background:var(--bad-soft)}
+  /* 解锁/上传 */
+  .lock{display:flex;gap:11px;align-items:center;padding:2px 0}
+  .lock .lk-ic{width:36px;height:36px;border-radius:12px;background:var(--mid-soft);color:var(--mid);display:inline-flex;align-items:center;justify-content:center;flex:none}
+  .lock .c{flex:1;font-size:12.5px;font-weight:700}
+  .lock-d{font-size:11px;color:var(--sub);font-weight:500;margin-top:3px;line-height:1.5}
+  .lock-btns{display:flex;gap:9px;margin-top:13px}
+  .lbtn{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;font-size:11.5px;font-weight:700;padding:10px;border-radius:12px}
+  .lbtn.primary{background:var(--primary);color:#fff}
+  .lbtn.ghost{background:var(--primary-soft);color:var(--primary)}
+
+  /* 活动 / 天气监测 */
+  .evt{display:flex;gap:11px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+  .evt:last-of-type{border:0}
+  .evt .c{flex:1}
+  .evt .c .h{font-size:12.5px;font-weight:700}
+  .evt .c .d{font-size:11px;color:var(--sub);margin-top:2px;line-height:1.45}
+  .evt-tag{font-size:10px;font-weight:800;padding:3px 9px;border-radius:20px;white-space:nowrap}
+  .evt-tag.up{background:var(--good-soft);color:var(--good)}
+  .evt-tag.down{background:var(--bad-soft);color:var(--bad)}
+  .evt-sug{font-size:11.5px;line-height:1.6;margin-top:11px;background:var(--primary-soft);color:#23306a;padding:10px 11px;border-radius:11px}
+  .evt-sug b{color:var(--primary)}
+
   /* 经营概览 KPI */
   .kpis4{display:flex;gap:6px}
   .kpis4 .kpi4{flex:1;text-align:center;padding:2px 0}
@@ -189,6 +227,12 @@
     </span>
   </div>
 
+  <div class="greet">
+    <span class="g-ic" data-ic="sun" data-sz="16"></span>
+    <span class="g-hi">上午好，王店长</span>
+    <span class="g-date">6月6日 周六 · 早班</span>
+  </div>
+
   <div class="appbar">
     <div class="store">
       <div class="name">示例服饰 · 杭州万象城店 <span class="chev" data-ic="chevron-down" data-sz="16"></span></div>
@@ -201,25 +245,42 @@
 
     <!-- 工作台 -->
     <div class="screen active" id="home">
+      <div class="stage">
+        <span class="stage-l">数据接入</span>
+        <div class="stage-seg">
+          <div class="so on" data-stage="external">外部数据</div>
+          <div class="so" data-stage="member">+会员</div>
+          <div class="so" data-stage="operation">+经营</div>
+        </div>
+      </div>
+
       <div class="hero">
         <div class="hero-top">
           <div class="gauge" id="gauge"></div>
           <div class="hero-info">
-            <div class="grade">综合健康分 <span class="tag" id="h-grade">偏弱</span></div>
-            <div class="trend" id="h-trend">较上月 <b>▼ 3 分</b> ｜ 同类店中位 60</div>
-            <div class="comp" id="h-comp">点位潜力 70　·　经营表现 46</div>
+            <div class="grade">综合健康分 <span class="tag" id="h-grade">中</span></div>
+            <div class="comp2" id="h-comp2">基于外部数据 · 完整度 45%</div>
+            <div class="comp" id="h-comp">点位潜力 68　·　经营表现 —</div>
           </div>
         </div>
       </div>
 
       <div class="card">
-        <div class="card-t">经营概览 <span class="more">本月 · 环比</span></div>
-        <div class="kpis4" id="kpis4">
-          <div class="kpi4"><div class="k-v">86.5<span class="k-u">万</span></div><div class="k-l">销售额</div><div class="k-d down">▼4%</div></div>
-          <div class="kpi4"><div class="k-v">1.24<span class="k-u">万</span></div><div class="k-l">客流</div><div class="k-d down">▼8%</div></div>
-          <div class="kpi4"><div class="k-v">18.6<span class="k-u">%</span></div><div class="k-l">进店转化</div><div class="k-d down">▼1%</div></div>
-          <div class="kpi4"><div class="k-v">412<span class="k-u">元</span></div><div class="k-l">客单价</div><div class="k-d up">▲6%</div></div>
+        <div class="card-t">商圈与竞争 <span class="more">外部数据 · 250m 网格</span></div>
+        <div class="kpis4">
+          <div class="kpi4"><div class="k-v">4.2<span class="k-u">万</span></div><div class="k-l">可达客群</div><div class="k-d up">▲2%</div></div>
+          <div class="kpi4"><div class="k-v">7<span class="k-u">家</span></div><div class="k-l">周边竞品</div><div class="k-d down">▲2家</div></div>
+          <div class="kpi4"><div class="k-v">8.6<span class="k-u">万</span></div><div class="k-l">商场日客流</div><div class="k-d down">▼5%</div></div>
+          <div class="kpi4"><div class="k-v">中高</div><div class="k-l">消费力</div><div class="k-d">匹配</div></div>
         </div>
+      </div>
+
+      <div class="card">
+        <div class="card-t">本周外部影响 · 活动与天气 <span class="more">客流预测</span></div>
+        <div class="evt"><span class="ibox primary s34" data-ic="megaphone" data-sz="18"></span><div class="c"><div class="h">本商场周年庆（周六–周日）</div><div class="d">全场大促，预计到场客流 +25%</div></div><span class="evt-tag up">客流▲25%</span></div>
+        <div class="evt"><span class="ibox bad s34" data-ic="store" data-sz="18"></span><div class="c"><div class="h">隔壁 H&amp;M 满减（进行中）</div><div class="d">同业态促销，或分流你的客流</div></div><span class="evt-tag down">或分流</span></div>
+        <div class="evt"><span class="ibox mid s34" data-ic="cloud-rain" data-sz="18"></span><div class="c"><div class="h">周三–周四 暴雨</div><div class="d">恶劣天气，预计客流 -15%</div></div><span class="evt-tag down">客流▼15%</span></div>
+        <div class="evt-sug"><b>AI 联动建议</b>：借周年庆高峰加推连带与爆品；雨天主推会员到店礼、做好留客与线上承接。</div>
       </div>
 
       <div class="quick">
@@ -232,48 +293,21 @@
       <div class="card">
         <div class="ai">
           <div class="ai-av" data-ic="sparkles" data-sz="20"></div>
-          <div>
-            <div class="ai-bubble" id="h-diag">综合健康分 <b>49（偏弱）</b>。<b>点位是好的</b>——商圈机会 74、客群充足；问题出在<b>经营</b>：进店转化与会员渗透率明显低于同类店，叠加近距竞品偏多。</div>
-            <div class="verdict"><span data-ic="check-circle" data-sz="16"></span><span id="h-verdict-t">值得投入改善，不建议止损</span></div>
+          <div style="flex:1">
+            <div class="ai-bubble" id="h-problem">…</div>
+            <div class="ai-sug"><b>建议</b> <span id="h-sug">…</span></div>
+            <div class="verdict" id="h-verdict"><span data-ic="check-circle" data-sz="16"></span><span id="h-verdict-t">…</span></div>
           </div>
         </div>
       </div>
 
-      <div class="sec-title"><span class="ibox primary" data-ic="target" data-sz="14"></span>待办建议</div>
-      <div class="todo">
-        <span class="ibox primary s34" data-ic="footprints" data-sz="20"></span>
-        <div class="c"><b>优化进店转化</b>：周末路过到店转化仅 18%，低于同场服饰店。建议调整橱窗与入口陈列。</div>
-        <div class="go">去诊断</div>
-      </div>
-      <div class="todo">
-        <span class="ibox primary s34" data-ic="users" data-sz="20"></span>
-        <div class="c"><b>启动会员渗透</b>：商圈内 1.2 万潜客未触达，建议定向触达。</div>
-        <div class="go">去行动</div>
-      </div>
+      <div class="card" id="member-card"></div>
+      <div class="card" id="op-card"></div>
 
-      <div class="sec-title"><span class="ibox bad" data-ic="alert-triangle" data-sz="14"></span>预警</div>
+      <div class="sec-title"><span class="ibox bad" data-ic="alert-triangle" data-sz="14"></span>预警（外部监测，无需上传）</div>
       <div class="alert">
         <span class="ibox bad s34" data-ic="store" data-sz="20"></span>
-        <div class="c"><b>竞争加剧</b>：本月同场新开 2 家女装竞品（距 60m / 120m），竞争压力分升至 82，关注客流分流。</div>
-      </div>
-
-      <div class="card" style="margin-top:14px">
-        <div class="card-t">本周关键变化 <span class="more">近 7 天</span></div>
-        <div class="chg">
-          <span class="ibox bad s34" data-ic="trending-down" data-sz="19"></span>
-          <div class="c"><div class="h">门店客流</div><div class="d">商圈大盘 -5%，本店 -8%，跑输大盘 3 个点</div></div>
-          <div class="v" style="color:var(--bad)">-8%</div>
-        </div>
-        <div class="chg">
-          <span class="ibox good s34" data-ic="credit-card" data-sz="19"></span>
-          <div class="c"><div class="h">客单价</div><div class="d">连带率提升带动，优于上周</div></div>
-          <div class="v" style="color:var(--good)">+6%</div>
-        </div>
-        <div class="chg">
-          <span class="ibox mid s34" data-ic="repeat" data-sz="19"></span>
-          <div class="c"><div class="h">会员复购</div><div class="d">沉睡会员增加，需召回</div></div>
-          <div class="v" style="color:var(--mid)">-2%</div>
-        </div>
+        <div class="c"><b>竞争加剧</b>：本月同场新开 2 家女装竞品（距 60m / 120m），关注客流分流。</div>
       </div>
     </div>
 
@@ -433,6 +467,12 @@ const ICONS={
   'alert-triangle':'<path d="m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/>',
   'chevron-down':'<path d="m6 9 6 6 6-6"/>',
   'arrow-up':'<path d="M12 19V5"/><path d="m5 12 7-7 7 7"/>',
+  lock:'<rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+  upload:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/>',
+  link:'<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>',
+  megaphone:'<path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
+  'cloud-rain':'<path d="M20 16.2A4.5 4.5 0 0 0 17.5 8h-1.8A7 7 0 1 0 4 14.9"/><path d="M8 19v2M12 19v3M16 19v2"/>',
 };
 function svg(n,size,sw){size=size||22;sw=sw||1.9;return `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${ICONS[n]||''}</svg>`}
 function injectIcons(root){(root||document).querySelectorAll('[data-ic]').forEach(e=>{
@@ -452,10 +492,6 @@ document.querySelectorAll('.nav .t').forEach(t=>{
 function gauge(score){const r=45,c=2*Math.PI*r,off=c*(1-score/100);
   const col=score>=70?'#fff':score>=55?'#FFE08A':'#FFC4BE';
   return `<svg width="106" height="106" viewBox="0 0 106 106"><circle cx="53" cy="53" r="${r}" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="9"/><circle cx="53" cy="53" r="${r}" fill="none" stroke="${col}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 53 53)"/></svg><div class="val"><div class="num">${score}</div><div class="lab">/ 100</div></div>`;}
-let curScore=49;
-function renderGauge(){document.getElementById('gauge').innerHTML=gauge(curScore);}
-renderGauge();
-
 // ===== 六维 =====
 let dims=[{k:'商圈机会',ic:'map-pin',s:74,side:'点位'},{k:'载体质量',ic:'building',s:62,side:'点位'},{k:'竞争优势',ic:'crosshair',s:18,side:'点位',note:'压力82'},{k:'客流转化',ic:'footprints',s:42,side:'经营'},{k:'会员经营',ic:'users',s:45,side:'经营'},{k:'经营达成',ic:'wallet',s:50,side:'经营'}];
 const col=s=>s>=70?'var(--good)':s>=55?'#3FAE6B':s>=40?'var(--mid)':'var(--bad)';
@@ -510,26 +546,61 @@ document.querySelectorAll('#m-times .qchip').forEach(c=>c.onclick=()=>{document.
 document.querySelectorAll('[data-jump]').forEach(q=>q.onclick=()=>{document.querySelector('.nav .t[data-s="ai"]').click();aiView('data');});
 document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{const inp=document.querySelector('#ai-chat .composer input');inp.value=c.textContent;inp.focus();}));
 
-// ===== 接入后端 API（http(s) 下生效；file:// 打开则用本地示例数据）=====
+// ===== 数据成熟度（演示：外部 → +会员 → +经营 逐层解锁）+ 接入后端 =====
 const ONLINE=location.protocol.indexOf('http')===0, API='/api';
-async function boot(){
-  if(!ONLINE)return;
-  try{
-    const wb=await (await fetch(API+'/stores/current/workbench')).json();
-    const sc=await (await fetch(API+'/stores/current/scorecard')).json();
-    curScore=Math.round(wb.composite); renderGauge();
-    document.getElementById('h-grade').textContent=wb.grade;
-    document.getElementById('h-trend').innerHTML='较上月 <b>'+(wb.trend_delta>0?'▲':'▼')+' '+Math.abs(wb.trend_delta)+' 分</b> ｜ 同类店中位 60';
-    document.getElementById('h-comp').textContent='点位潜力 '+wb.point_potential+'　·　经营表现 '+wb.operation_performance;
-    document.getElementById('h-diag').textContent=wb.diagnosis;
-    document.getElementById('h-verdict-t').textContent=wb.verdict;
-    try{const kp=await (await fetch(API+'/stores/current/kpis')).json();
-      document.getElementById('kpis4').innerHTML=kp.map(x=>`<div class="kpi4"><div class="k-v">${x.val}<span class="k-u">${x.unit}</span></div><div class="k-l">${x.name}</div><div class="k-d ${x.env<0?'down':x.env>0?'up':''}">${x.env>0?'▲':x.env<0?'▼':''}${Math.abs(x.env)}%</div></div>`).join('');}catch(e){}
-    dims=sc.dimensions.map(d=>({k:d.name,ic:d.icon,s:Math.round(d.score),side:d.side==='point'?'点位':'经营',note:d.negative?('压力'+Math.round(d.score)):null}));
-    renderDims(); renderRadar();
-    const dot=document.getElementById('dot'); dot.style.left=sc.point_potential+'%'; dot.style.bottom=sc.operation_performance+'%';
-  }catch(e){console.warn('API 未连接，使用本地示例数据',e);}
+const STAGE={
+  external:{score:62,grade:'中',comp:45,point:68,op:null,
+    ai:{problem:'当前仅接入外部数据：商圈机会好（74），但周边竞争偏强（压力 82）。',sug:'经营与会员数据尚未接入，暂无法判断自身经营优劣；上传后解锁综合诊断。',verdict:'结论待补充数据',vc:'mid'},
+    mdata:null,odata:null},
+  member:{score:58,grade:'偏弱',comp:70,point:68,op:42,
+    ai:{problem:'会员渗透率仅 28%、复购偏低——客群盘子在，但没吃透。',sug:'再上传经营/销售数据，可精准定位经营短板。',verdict:'初步判断：经营偏弱，建议改善',vc:'mid'},
+    mdata:[['会员数','1.2万',''],['复购率','33%','▼2%'],['渗透率','28%',''],['潜客','1.2万','']],odata:null},
+  operation:{score:54,grade:'偏弱',comp:100,point:60.9,op:47,
+    ai:{problem:'点位是好的（潜力 60.9），问题在经营——渗透率 28%、进店转化偏低。',sug:'优先优化进店转化，并对商圈潜客做定向触达。',verdict:'值得投入改善，不建议止损',vc:'good'},
+    mdata:[['会员数','1.2万',''],['复购率','33%','▼2%'],['渗透率','28%',''],['潜客','1.2万','']],
+    odata:[['销售额','86.5万','▼4%'],['客流','1.24万','▼8%'],['进店转化','18.6%','▼1%'],['客单价','412元','▲6%']]},
+};
+let stage='external';
+function lockHTML(title,dataname,tip){
+  return `<div class="card-t">${title} <span class="pill mid">未接入</span></div>`+
+    `<div class="lock"><span class="lk-ic">${svg('lock',18)}</span><div class="c"><b>${dataname}未接入</b><div class="lock-d">${tip}</div></div></div>`+
+    `<div class="lock-btns"><div class="lbtn primary">${svg('upload',15)}上传 / 录入</div><div class="lbtn ghost">${svg('link',15)}帮我对接 · 增值</div></div>`;
 }
+function dataHTML(title,rows){
+  const dn=x=>`<div class="k-d ${x&&x.indexOf('▼')>=0?'down':x&&x.indexOf('▲')>=0?'up':''}">${x||''}</div>`;
+  return `<div class="card-t">${title} <span class="more">本月 · 环比</span></div><div class="kpis4">`+
+    rows.map(r=>`<div class="kpi4"><div class="k-v">${r[1]}</div><div class="k-l">${r[0]}</div>${dn(r[2])}</div>`).join('')+`</div>`;
+}
+function renderStage(){
+  const d=STAGE[stage];
+  document.getElementById('gauge').innerHTML=gauge(d.score);
+  document.getElementById('h-grade').textContent=d.grade;
+  const lt={external:'基于外部数据',member:'外部 + 会员数据',operation:'全维度数据'}[stage];
+  document.getElementById('h-comp2').textContent=lt+' · 完整度 '+d.comp+'%';
+  document.getElementById('h-comp').textContent='点位潜力 '+d.point+'　·　经营表现 '+(d.op==null?'—（待数据）':d.op);
+  document.getElementById('h-problem').textContent=d.ai.problem;
+  document.getElementById('h-sug').textContent=d.ai.sug;
+  document.getElementById('h-verdict-t').textContent=d.ai.verdict;
+  document.getElementById('h-verdict').className='verdict '+(d.ai.vc||'good');
+  document.getElementById('member-card').innerHTML=d.mdata?dataHTML('会员概览',d.mdata):lockHTML('会员概览','会员/CRM 数据','上传会员数据，解锁会员 RFM 与潜客分析');
+  document.getElementById('op-card').innerHTML=d.odata?dataHTML('经营概览',d.odata):lockHTML('经营概览','POS/销售数据','上传经营数据，解锁经营诊断与综合评分');
+}
+document.querySelectorAll('.stage-seg .so').forEach(o=>o.onclick=()=>{stage=o.dataset.stage;document.querySelectorAll('.stage-seg .so').forEach(x=>x.classList.toggle('on',x.dataset.stage===stage));renderStage();});
+renderStage();
+
+async function boot(){ if(!ONLINE)return; try{
+  const wb=await (await fetch(API+'/stores/current/workbench')).json();
+  const sc=await (await fetch(API+'/stores/current/scorecard')).json();
+  const kp=await (await fetch(API+'/stores/current/kpis')).json();
+  const O=STAGE.operation;
+  O.score=Math.round(wb.composite);O.grade=wb.grade;O.comp=sc.completeness;O.point=wb.point_potential;O.op=wb.operation_performance;
+  O.ai={problem:wb.problem,sug:wb.suggestion,verdict:wb.verdict,vc:wb.verdict_color};
+  O.odata=kp.map(x=>[x.name,x.val+(x.unit||''),(x.env>0?'▲':x.env<0?'▼':'')+(x.env?Math.abs(x.env)+'%':'')]);
+  dims=sc.dimensions.map(d=>({k:d.name,ic:d.icon,s:Math.round(d.score),side:d.side==='point'?'点位':'经营',note:d.negative?('压力'+Math.round(d.score)):null}));
+  renderDims(); renderRadar();
+  const dot=document.getElementById('dot'); dot.style.left=sc.point_potential+'%'; dot.style.bottom=sc.operation_performance+'%';
+  if(stage==='operation')renderStage();
+}catch(e){console.warn('API 未连接，使用本地示例数据',e);} }
 boot();
 
 injectIcons();
