@@ -24,7 +24,7 @@ def clip_of(pg, sel, m=18):
 def main():
     with sync_playwright() as p:
         br = p.chromium.launch()
-        pg = br.new_page(viewport={"width": 470, "height": 940}, device_scale_factor=2)
+        pg = br.new_page(viewport={"width": 470, "height": 940}, device_scale_factor=3)
         pg.goto(url("index.html")); pg.wait_for_timeout(700)
 
         def shot(n):
@@ -39,7 +39,7 @@ def main():
         pg.click('.nav .t[data-s="grow"]'); shot("05-mobile-增长.png")
         pg.close()
 
-        pg2 = br.new_page(viewport={"width": 1340, "height": 900}, device_scale_factor=2)
+        pg2 = br.new_page(viewport={"width": 1340, "height": 900}, device_scale_factor=3)
         pg2.goto(url("dashboard.html")); pg2.wait_for_timeout(700)
         pg2.screenshot(path=str(OUT / "06-dashboard-集团驾驶舱.png"), full_page=True)
         print("saved 06-dashboard-集团驾驶舱.png")

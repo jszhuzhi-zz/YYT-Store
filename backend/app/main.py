@@ -149,6 +149,22 @@ def query(sid: str, metric: str = "销售额", db: Session = Depends(get_db)):
     return data
 
 
+@app.get("/api/stores/{sid}/kpis")
+def kpis(sid: str, db: Session = Depends(get_db)):
+    """首页经营概览的关键指标（销售/客流/转化/客单价）。"""
+    s = _resolve(db, sid)
+    short = {"万元": "万", "万人次": "万", "%": "%", "元": "元"}
+    rows = {r.metric: json.loads(r.payload)
+            for r in db.query(MetricSeries).filter(MetricSeries.store_id == s.id).all()}
+    out = []
+    for m in ["销售额", "客流", "进店转化", "客单价"]:
+        d = rows.get(m)
+        if d:
+            out.append({"name": m, "val": d["val"],
+                        "unit": short.get(d["unit"], d["unit"]), "env": d["env"]})
+    return out
+
+
 # ---------- 托管原型前端 ----------
 PROTO = os.path.join(os.path.dirname(__file__), "..", "..", "prototype")
 if os.path.isdir(PROTO):

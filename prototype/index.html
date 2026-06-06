@@ -71,6 +71,15 @@
   .hero-info .trend{font-size:12px;opacity:.94;margin-top:7px}
   .hero-info .comp{font-size:11px;opacity:.92;margin-top:9px;background:rgba(255,255,255,.14);padding:7px 11px;border-radius:11px;display:inline-block}
 
+  /* 经营概览 KPI */
+  .kpis4{display:flex;gap:6px}
+  .kpis4 .kpi4{flex:1;text-align:center;padding:2px 0}
+  .kpis4 .kpi4+.kpi4{border-left:1px solid var(--line)}
+  .kpi4 .k-v{font-size:18px;font-weight:800;letter-spacing:-.5px;color:var(--text)}
+  .kpi4 .k-u{font-size:9px;color:var(--muted);font-weight:700;margin-left:1px}
+  .kpi4 .k-l{font-size:10.5px;color:var(--sub);margin-top:5px}
+  .kpi4 .k-d{font-size:10px;font-weight:800;margin-top:3px}
+
   /* quick */
   .quick{display:flex;gap:10px;margin-bottom:14px}
   .qa{flex:1;background:#fff;border-radius:17px;padding:13px 4px 11px;text-align:center;font-size:11px;font-weight:700;color:var(--sub);box-shadow:var(--shadow-sm)}
@@ -200,6 +209,16 @@
             <div class="trend" id="h-trend">较上月 <b>▼ 3 分</b> ｜ 同类店中位 60</div>
             <div class="comp" id="h-comp">点位潜力 70　·　经营表现 46</div>
           </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-t">经营概览 <span class="more">本月 · 环比</span></div>
+        <div class="kpis4" id="kpis4">
+          <div class="kpi4"><div class="k-v">86.5<span class="k-u">万</span></div><div class="k-l">销售额</div><div class="k-d down">▼4%</div></div>
+          <div class="kpi4"><div class="k-v">1.24<span class="k-u">万</span></div><div class="k-l">客流</div><div class="k-d down">▼8%</div></div>
+          <div class="kpi4"><div class="k-v">18.6<span class="k-u">%</span></div><div class="k-l">进店转化</div><div class="k-d down">▼1%</div></div>
+          <div class="kpi4"><div class="k-v">412<span class="k-u">元</span></div><div class="k-l">客单价</div><div class="k-d up">▲6%</div></div>
         </div>
       </div>
 
@@ -504,6 +523,8 @@ async function boot(){
     document.getElementById('h-comp').textContent='点位潜力 '+wb.point_potential+'　·　经营表现 '+wb.operation_performance;
     document.getElementById('h-diag').textContent=wb.diagnosis;
     document.getElementById('h-verdict-t').textContent=wb.verdict;
+    try{const kp=await (await fetch(API+'/stores/current/kpis')).json();
+      document.getElementById('kpis4').innerHTML=kp.map(x=>`<div class="kpi4"><div class="k-v">${x.val}<span class="k-u">${x.unit}</span></div><div class="k-l">${x.name}</div><div class="k-d ${x.env<0?'down':x.env>0?'up':''}">${x.env>0?'▲':x.env<0?'▼':''}${Math.abs(x.env)}%</div></div>`).join('');}catch(e){}
     dims=sc.dimensions.map(d=>({k:d.name,ic:d.icon,s:Math.round(d.score),side:d.side==='point'?'点位':'经营',note:d.negative?('压力'+Math.round(d.score)):null}));
     renderDims(); renderRadar();
     const dot=document.getElementById('dot'); dot.style.left=sc.point_potential+'%'; dot.style.bottom=sc.operation_performance+'%';
